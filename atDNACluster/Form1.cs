@@ -168,8 +168,18 @@ namespace atDNACluster
             myPane.Title.IsVisible = false;
             myPane.Legend.IsVisible = false;
 
+            int start;
+            if (checkBox1.Checked == true)
+            {
+                start = 0;
+            }
+            else
+            {
+                start = 1;
+            }
+
             PointPairList list = new PointPairList();
-            for (int i = 1; i < matrixOfCoordinates.GetLength(0); i++)
+            for (int i = start; i < matrixOfCoordinates.GetLength(0); i++)
             {
                 list.Add(matrixOfCoordinates[i, 0],
                          matrixOfCoordinates[i, 1]);
@@ -392,11 +402,23 @@ namespace atDNACluster
 
         void transformOfMatrix()
         {
-            mixture = new double[matrixOfCoordinates.GetLength(0) - 1][];
-
-            for (int i = 1; i < matrixOfCoordinates.GetLength(0); i++)
+            if (checkBox1.Checked == true)
             {
-                mixture[i - 1] = new double[] { matrixOfCoordinates[i, 0], matrixOfCoordinates[i, 1] };
+                mixture = new double[matrixOfCoordinates.GetLength(0)][];
+
+                for (int i = 0; i < matrixOfCoordinates.GetLength(0); i++)
+                {
+                    mixture[i] = new double[] { matrixOfCoordinates[i, 0], matrixOfCoordinates[i, 1] };
+                }
+            }
+            else
+            {
+                mixture = new double[matrixOfCoordinates.GetLength(0) - 1][];
+
+                for (int i = 1; i < matrixOfCoordinates.GetLength(0); i++)
+                {
+                    mixture[i - 1] = new double[] { matrixOfCoordinates[i, 0], matrixOfCoordinates[i, 1] };
+                }
             }
         }
     }
