@@ -25,12 +25,6 @@ namespace atDNACluster
         double[][] mixture;
         int[] classificationsOur;
 
-        bool getDistanceMode = false;
-        double x1 = 0,
-               y1 = 0,
-               x2 = 0,
-               y2 = 0;
-        int numberOfClick = 0;
         int numberOfClusters = 4;
 
         public Form1()
@@ -42,7 +36,6 @@ namespace atDNACluster
             zedGraph.Name = "zedGraph";
             zedGraph.Size = new Size(1240, 700);
             zedGraph.PointValueEvent += new ZedGraphControl.PointValueHandler(zedGraph_PointValueEvent);
-            zedGraph.MouseClick += new MouseEventHandler(zedGraph_MouseClick);
             Controls.Add(zedGraph);
         }
 
@@ -106,7 +99,18 @@ namespace atDNACluster
                 sda = new DescriptiveAnalysis(matrixOfDistances);
                 sda.Compute();
 
-                pca = new PrincipalComponentAnalysis(sda.Source, AnalysisMethod.Standardize);
+                AnalysisMethod AnalysisPCA = new AnalysisMethod();
+
+                if(radioButton1.Checked==true)
+                {
+                    AnalysisPCA = AnalysisMethod.Center;
+                }
+                else if(radioButton2.Checked==true)
+                {
+                    AnalysisPCA = AnalysisMethod.Standardize;
+                }
+
+                pca = new PrincipalComponentAnalysis(sda.Source, AnalysisPCA);
                 pca.Compute();
 
                 matrixOfCoordinates = pca.Transform(matrixOfDistances, 2);
@@ -123,13 +127,6 @@ namespace atDNACluster
 
                 result = MessageBox.Show(message, caption, buttons);
             }
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            getDistanceMode = true;
-
-            label7.Text = "Выберите точку 1";
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -249,37 +246,6 @@ namespace atDNACluster
             return result;
         }
 
-        private void zedGraph_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (getDistanceMode == true)
-            {
-                if (numberOfClick == 0)
-                {
-                    zedGraph.GraphPane.ReverseTransform(e.Location, out x1, out y1);
-
-                    label7.Text = "Выберите точку 2";
-                    label3.Text = x1.ToString();
-                    label4.Text = y1.ToString();
-
-                    numberOfClick++;
-                }
-                else if (numberOfClick == 1)
-                {
-                    zedGraph.GraphPane.ReverseTransform(e.Location, out x2, out y2);
-
-                    double pointsDistance = Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
-                    label7.Text = "Дистанция:";
-                    label8.Text = pointsDistance.ToString();
-                    label5.Text = x2.ToString();
-                    label2.Text = y2.ToString();
-
-                    numberOfClick = 0;
-
-                    getDistanceMode = false;
-                }
-            }
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             if (numberOfClusters < 4)
@@ -293,7 +259,14 @@ namespace atDNACluster
             }
             else
             {
-                classificationsOur = new int[kitNumbers.Length - 1];
+                if (checkBox1.Checked == true)
+                {
+                    classificationsOur = new int[kitNumbers.Length - 1];
+                }
+                else
+                {
+                    classificationsOur = new int[kitNumbers.Length];
+                }
 
                 string[] kitsForPaint;
 
@@ -420,6 +393,32 @@ namespace atDNACluster
                     mixture[i - 1] = new double[] { matrixOfCoordinates[i, 0], matrixOfCoordinates[i, 1] };
                 }
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button4.Enabled = false;
+
+            groupBox1.Text = "Load";
+            groupBox2.Text = "Processing";
+            groupBox4.Text = "Clustering";
+            groupBox5.Text = "Highlighting";
+
+            button1.Text = "Data";
+            button3.Text = "PCA";
+            button5.Text = "K-means";
+
+            button2.Text = "1 - Red";
+            button6.Text = "2 - Green";
+            button7.Text = "3 - Black";
+            button8.Text = "Start";
+
+            label9.Text = "Number of clusters:";
+
+            checkBox1.Text = "Show yourself";
+
+            radioButton1.Text = "Center";
+            radioButton2.Text = "Standartize";
         }
     }
 }
