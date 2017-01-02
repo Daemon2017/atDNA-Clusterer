@@ -28,265 +28,211 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.button4 = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.кластерыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.количествоКластеровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обработкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.типВыводаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.центровкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.стандартизацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обработатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.кластеризацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обработатьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.выделениеЦветомToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.красныйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.зеленыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.черныйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обработатьToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.eNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // menuStrip1
             // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(105, 51);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Загрузка";
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.файлToolStripMenuItem,
+            this.кластерыToolStripMenuItem,
+            this.обработкаToolStripMenuItem,
+            this.кластеризацияToolStripMenuItem,
+            this.выделениеЦветомToolStripMenuItem,
+            this.eNGToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1264, 24);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // button1
+            // файлToolStripMenuItem
             // 
-            this.button1.Location = new System.Drawing.Point(6, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(92, 25);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Данные";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.открытьToolStripMenuItem});
+            this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.файлToolStripMenuItem.Text = "Файл";
             // 
-            // button3
+            // открытьToolStripMenuItem
             // 
-            this.button3.Location = new System.Drawing.Point(6, 129);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(93, 25);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "PCA";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.открытьToolStripMenuItem.Text = "Открыть";
+            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
-            // groupBox2
+            // кластерыToolStripMenuItem
             // 
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Controls.Add(this.radioButton1);
-            this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Controls.Add(this.numericUpDown1);
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Location = new System.Drawing.Point(12, 69);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(105, 157);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Обработка";
+            this.кластерыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.количествоКластеровToolStripMenuItem});
+            this.кластерыToolStripMenuItem.Name = "кластерыToolStripMenuItem";
+            this.кластерыToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.кластерыToolStripMenuItem.Text = "Кластеры";
             // 
-            // checkBox1
+            // количествоКластеровToolStripMenuItem
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 59);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(115, 17);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Отображать себя";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.количествоКластеровToolStripMenuItem.Name = "количествоКластеровToolStripMenuItem";
+            this.количествоКластеровToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.количествоКластеровToolStripMenuItem.Text = "Количество кластеров";
             // 
-            // numericUpDown1
+            // обработкаToolStripMenuItem
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(7, 33);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            31,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(92, 20);
-            this.numericUpDown1.TabIndex = 15;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
+            this.обработкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.типВыводаToolStripMenuItem,
+            this.обработатьToolStripMenuItem});
+            this.обработкаToolStripMenuItem.Name = "обработкаToolStripMenuItem";
+            this.обработкаToolStripMenuItem.Size = new System.Drawing.Size(106, 20);
+            this.обработкаToolStripMenuItem.Text = "Обработка МГК";
             // 
-            // label9
+            // типВыводаToolStripMenuItem
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 16);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(98, 13);
-            this.label9.TabIndex = 14;
-            this.label9.Text = "Число кластеров:";
+            this.типВыводаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.центровкаToolStripMenuItem,
+            this.стандартизацияToolStripMenuItem});
+            this.типВыводаToolStripMenuItem.Name = "типВыводаToolStripMenuItem";
+            this.типВыводаToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.типВыводаToolStripMenuItem.Text = "Тип вывода";
             // 
-            // groupBox4
+            // центровкаToolStripMenuItem
             // 
-            this.groupBox4.Controls.Add(this.button5);
-            this.groupBox4.Location = new System.Drawing.Point(12, 232);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(105, 50);
-            this.groupBox4.TabIndex = 5;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Кластеризация";
+            this.центровкаToolStripMenuItem.CheckOnClick = true;
+            this.центровкаToolStripMenuItem.Name = "центровкаToolStripMenuItem";
+            this.центровкаToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.центровкаToolStripMenuItem.Text = "Центровка";
+            this.центровкаToolStripMenuItem.Click += new System.EventHandler(this.центровкаToolStripMenuItem_Click);
             // 
-            // button5
+            // стандартизацияToolStripMenuItem
             // 
-            this.button5.Location = new System.Drawing.Point(7, 19);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(92, 25);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "K-средних";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.стандартизацияToolStripMenuItem.Checked = true;
+            this.стандартизацияToolStripMenuItem.CheckOnClick = true;
+            this.стандартизацияToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.стандартизацияToolStripMenuItem.Name = "стандартизацияToolStripMenuItem";
+            this.стандартизацияToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.стандартизацияToolStripMenuItem.Text = "Стандартизация";
+            this.стандартизацияToolStripMenuItem.Click += new System.EventHandler(this.стандартизацияToolStripMenuItem_Click);
             // 
-            // button2
+            // обработатьToolStripMenuItem
             // 
-            this.button2.Location = new System.Drawing.Point(7, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(92, 25);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "1 - Красный";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.обработатьToolStripMenuItem.Name = "обработатьToolStripMenuItem";
+            this.обработатьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.обработатьToolStripMenuItem.Text = "Обработать";
+            this.обработатьToolStripMenuItem.Click += new System.EventHandler(this.обработатьToolStripMenuItem_Click);
             // 
-            // groupBox5
+            // кластеризацияToolStripMenuItem
             // 
-            this.groupBox5.Controls.Add(this.button8);
-            this.groupBox5.Controls.Add(this.button7);
-            this.groupBox5.Controls.Add(this.button6);
-            this.groupBox5.Controls.Add(this.button2);
-            this.groupBox5.Location = new System.Drawing.Point(12, 288);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(105, 140);
-            this.groupBox5.TabIndex = 1;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Выделение";
+            this.кластеризацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.обработатьToolStripMenuItem1});
+            this.кластеризацияToolStripMenuItem.Name = "кластеризацияToolStripMenuItem";
+            this.кластеризацияToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
+            this.кластеризацияToolStripMenuItem.Text = "Кластеризация";
             // 
-            // button8
+            // обработатьToolStripMenuItem1
             // 
-            this.button8.Location = new System.Drawing.Point(7, 112);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(92, 25);
-            this.button8.TabIndex = 6;
-            this.button8.Text = "Обработать";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.обработатьToolStripMenuItem1.Name = "обработатьToolStripMenuItem1";
+            this.обработатьToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.обработатьToolStripMenuItem1.Text = "Обработать";
+            this.обработатьToolStripMenuItem1.Click += new System.EventHandler(this.обработатьToolStripMenuItem1_Click);
             // 
-            // button7
+            // выделениеЦветомToolStripMenuItem
             // 
-            this.button7.Enabled = false;
-            this.button7.Location = new System.Drawing.Point(7, 81);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(92, 25);
-            this.button7.TabIndex = 5;
-            this.button7.Text = "3 - Черный";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.выделениеЦветомToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.красныйToolStripMenuItem,
+            this.зеленыйToolStripMenuItem,
+            this.черныйToolStripMenuItem,
+            this.обработатьToolStripMenuItem2});
+            this.выделениеЦветомToolStripMenuItem.Name = "выделениеЦветомToolStripMenuItem";
+            this.выделениеЦветомToolStripMenuItem.Size = new System.Drawing.Size(123, 20);
+            this.выделениеЦветомToolStripMenuItem.Text = "Выделение цветом";
             // 
-            // button6
+            // красныйToolStripMenuItem
             // 
-            this.button6.Enabled = false;
-            this.button6.Location = new System.Drawing.Point(7, 50);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(92, 25);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "2 - Зеленый";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.красныйToolStripMenuItem.Name = "красныйToolStripMenuItem";
+            this.красныйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.красныйToolStripMenuItem.Text = "1 - Красный";
+            this.красныйToolStripMenuItem.Click += new System.EventHandler(this.красныйToolStripMenuItem_Click);
             // 
-            // radioButton1
+            // зеленыйToolStripMenuItem
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(7, 83);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(80, 17);
-            this.radioButton1.TabIndex = 16;
-            this.radioButton1.Text = "Центровка";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.зеленыйToolStripMenuItem.Name = "зеленыйToolStripMenuItem";
+            this.зеленыйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.зеленыйToolStripMenuItem.Text = "2 - Зеленый";
+            this.зеленыйToolStripMenuItem.Click += new System.EventHandler(this.зеленыйToolStripMenuItem_Click);
             // 
-            // radioButton2
+            // черныйToolStripMenuItem
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(6, 106);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(108, 17);
-            this.radioButton2.TabIndex = 17;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Стандартизация";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.черныйToolStripMenuItem.Name = "черныйToolStripMenuItem";
+            this.черныйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.черныйToolStripMenuItem.Text = "3 - Черный";
+            this.черныйToolStripMenuItem.Click += new System.EventHandler(this.черныйToolStripMenuItem_Click);
             // 
-            // button4
+            // обработатьToolStripMenuItem2
             // 
-            this.button4.Location = new System.Drawing.Point(18, 434);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(92, 25);
-            this.button4.TabIndex = 1;
-            this.button4.Text = "ENG";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.обработатьToolStripMenuItem2.Name = "обработатьToolStripMenuItem2";
+            this.обработатьToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.обработатьToolStripMenuItem2.Text = "Обработать";
+            this.обработатьToolStripMenuItem2.Click += new System.EventHandler(this.обработатьToolStripMenuItem2_Click);
+            // 
+            // eNGToolStripMenuItem
+            // 
+            this.eNGToolStripMenuItem.Name = "eNGToolStripMenuItem";
+            this.eNGToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
+            this.eNGToolStripMenuItem.Text = "ENG";
+            this.eNGToolStripMenuItem.Click += new System.EventHandler(this.eNGToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 661);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "atDNA Clusterer 0.0.4";
+            this.Text = "atDNA Clusterer 0.0.5";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem кластерыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem количествоКластеровToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обработкаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem типВыводаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem центровкаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem стандартизацияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обработатьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem кластеризацияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обработатьToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem выделениеЦветомToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem красныйToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem зеленыйToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem черныйToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обработатьToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem eNGToolStripMenuItem;
     }
 }
 

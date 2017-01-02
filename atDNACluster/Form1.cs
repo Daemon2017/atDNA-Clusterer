@@ -17,6 +17,15 @@ namespace atDNACluster
         KMeans kmeans;
         PrincipalComponentAnalysis pca;
         DescriptiveAnalysis sda;
+        AnalysisMethod AnalysisPCA;
+
+        string PCAMmessage = "Сперва Вы должны провести обработку с помощью МГК!";
+        string PCACaption = "Нехватка данных!";
+
+        string ClusterNumberMessage = "Для работы этой функции число кластеров должно быть равным 4!";
+        string ClustersNumberCaption = "Слишком мало кластеров!";
+        MessageBoxButtons ClustersNumberButtons = MessageBoxButtons.OK;
+        DialogResult ClustersNumberResult;
 
         double[,] matrixOfDistances;
         string[] kitNumbers;
@@ -25,132 +34,18 @@ namespace atDNACluster
         double[][] mixture;
         int[] classificationsOur;
 
-        int numberOfClusters = 4;
+        int numberOfClusters = 2;
 
         public Form1()
         {
             InitializeComponent();
 
             zedGraph = new ZedGraphControl();
-            zedGraph.Location = new Point(124, 12);
+            zedGraph.Location = new Point(0, 24);
             zedGraph.Name = "zedGraph";
-            zedGraph.Size = new Size(1240, 700);
+            zedGraph.Size = new Size(1366, 768 - 24 - 54);
             zedGraph.PointValueEvent += new ZedGraphControl.PointValueHandler(zedGraph_PointValueEvent);
             Controls.Add(zedGraph);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            matrixOfDistances = null;
-            kitNumbers = null;
-            kitNames = null;
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string[] allLinesDistances = File.ReadAllLines(openFileDialog.FileName);
-
-                matrixOfDistances = new double[allLinesDistances.Length - 1, allLinesDistances.Length - 1];
-
-                for (int i = 1; i < allLinesDistances.Length; i++)
-                {
-                    string[] rowDistances = allLinesDistances[i].Split(new[] { ';' });
-
-                    for (int j = 2; j < allLinesDistances.Length + 1; j++)
-                    {
-                        if (double.TryParse(rowDistances[j], out matrixOfDistances[i - 1, j - 2])) { }
-                    }
-                }
-
-                replaceZeros();
-
-                fillDiagonalByZeros();
-
-                string[] allLinesKits = File.ReadAllLines(openFileDialog.FileName);
-
-                kitNumbers = new string[allLinesKits.Length - 1];
-                kitNames = new string[allLinesKits.Length - 1];
-
-                for (int i = 1; i < allLinesKits.Length; i++)
-                {
-                    string[] rowKits = allLinesKits[i].Split(new[] { ';' });
-
-                    for (int j = 0; j < 0 + 1; j++)
-                    {
-                        kitNumbers[i - 1] = rowKits[j];
-                    }
-
-                    for (int j = 1; j < 1 + 1; j++)
-                    {
-                        kitNames[i - 1] = rowKits[j];
-                    }
-                }
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if ((matrixOfDistances != null) && (kitNumbers != null))
-            {
-                sda = null;
-
-                sda = new DescriptiveAnalysis(matrixOfDistances);
-                sda.Compute();
-
-                AnalysisMethod AnalysisPCA = new AnalysisMethod();
-
-                if(radioButton1.Checked==true)
-                {
-                    AnalysisPCA = AnalysisMethod.Center;
-                }
-                else if(radioButton2.Checked==true)
-                {
-                    AnalysisPCA = AnalysisMethod.Standardize;
-                }
-
-                pca = new PrincipalComponentAnalysis(sda.Source, AnalysisPCA);
-                pca.Compute();
-
-                matrixOfCoordinates = pca.Transform(matrixOfDistances, 2);
-                numberOfClusters = (int)numericUpDown1.Value;
-
-                CreateGraph(zedGraph);
-            }
-            else
-            {
-                string message = "Вы не загрузили матрицы с данными!";
-                string caption = "Нехватка данных!";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                result = MessageBox.Show(message, caption, buttons);
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            if (matrixOfCoordinates != null)
-            {
-                transformOfMatrix();
-
-                kmeans = new KMeans(numberOfClusters);
-                kmeans.Compute(mixture);
-
-                int[] classifications = kmeans.Clusters.Nearest(mixture);
-
-                updateGraph(classifications);
-            }
-            else
-            {
-                string message = "Вы не произвели обработку через PCA!";
-                string caption = "Нехватка данных!";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                result = MessageBox.Show(message, caption, buttons);
-            }
         }
 
         void CreateGraph(ZedGraphControl zgc)
@@ -165,15 +60,7 @@ namespace atDNACluster
             myPane.Title.IsVisible = false;
             myPane.Legend.IsVisible = false;
 
-            int start;
-            if (checkBox1.Checked == true)
-            {
-                start = 0;
-            }
-            else
-            {
-                start = 1;
-            }
+            int start = 1;
 
             PointPairList list = new PointPairList();
             for (int i = start; i < matrixOfCoordinates.GetLength(0); i++)
@@ -246,109 +133,9 @@ namespace atDNACluster
             return result;
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (numberOfClusters < 4)
-            {
-                string message = "Сперва нужно выставить число кластеров равным 4 или более, а затем нажать PCA и К-Средних!";
-                string caption = "Слишком мало кластеров!";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                result = MessageBox.Show(message, caption, buttons);
-            }
-            else
-            {
-                if (checkBox1.Checked == true)
-                {
-                    classificationsOur = new int[kitNumbers.Length - 1];
-                }
-                else
-                {
-                    classificationsOur = new int[kitNumbers.Length];
-                }
-
-                string[] kitsForPaint;
-
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                    for (int i = 0; i < kitsForPaint.Length; i++)
-                    {
-                        for (int j = 1; j < kitNumbers.Length; j++)
-                        {
-                            if (kitNumbers[j] == kitsForPaint[i])
-                            {
-                                classificationsOur[j - 1] = 1;
-                            }
-                        }
-                    }
-                }
-
-                button6.Enabled = true;
-            }
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            string[] kitsForPaint;
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                for (int i = 0; i < kitsForPaint.Length; i++)
-                {
-                    for (int j = 1; j < kitNumbers.Length; j++)
-                    {
-                        if (kitNumbers[j] == kitsForPaint[i])
-                        {
-                            classificationsOur[j - 1] = 2;
-                        }
-                    }
-                }
-            }
-
-            button7.Enabled = true;
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            string[] kitsForPaint;
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                for (int i = 0; i < kitsForPaint.Length; i++)
-                {
-                    for (int j = 1; j < kitNumbers.Length; j++)
-                    {
-                        if (kitNumbers[j] == kitsForPaint[i])
-                        {
-                            classificationsOur[j - 1] = 3;
-                        }
-                    }
-                }
-            }
-        }
-
         private void button8_Click(object sender, EventArgs e)
         {
             updateGraph(classificationsOur);
-
-            button6.Enabled = false;
-            button7.Enabled = false;
         }
 
         void replaceZeros()
@@ -375,50 +162,273 @@ namespace atDNACluster
 
         void transformOfMatrix()
         {
-            if (checkBox1.Checked == true)
-            {
-                mixture = new double[matrixOfCoordinates.GetLength(0)][];
 
-                for (int i = 0; i < matrixOfCoordinates.GetLength(0); i++)
-                {
-                    mixture[i] = new double[] { matrixOfCoordinates[i, 0], matrixOfCoordinates[i, 1] };
-                }
+            mixture = new double[matrixOfCoordinates.GetLength(0) - 1][];
+
+            for (int i = 1; i < matrixOfCoordinates.GetLength(0); i++)
+            {
+                mixture[i - 1] = new double[] { matrixOfCoordinates[i, 0], matrixOfCoordinates[i, 1] };
             }
-            else
-            {
-                mixture = new double[matrixOfCoordinates.GetLength(0) - 1][];
 
-                for (int i = 1; i < matrixOfCoordinates.GetLength(0); i++)
+        }
+
+        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            matrixOfDistances = null;
+            kitNumbers = null;
+            kitNames = null;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string[] allLinesDistances = File.ReadAllLines(openFileDialog.FileName);
+
+                matrixOfDistances = new double[allLinesDistances.Length - 1, allLinesDistances.Length - 1];
+
+                for (int i = 1; i < allLinesDistances.Length; i++)
                 {
-                    mixture[i - 1] = new double[] { matrixOfCoordinates[i, 0], matrixOfCoordinates[i, 1] };
+                    string[] rowDistances = allLinesDistances[i].Split(new[] { ';' });
+
+                    for (int j = 2; j < allLinesDistances.Length + 1; j++)
+                    {
+                        if (double.TryParse(rowDistances[j], out matrixOfDistances[i - 1, j - 2])) { }
+                    }
+                }
+
+                replaceZeros();
+
+                fillDiagonalByZeros();
+
+                string[] allLinesKits = File.ReadAllLines(openFileDialog.FileName);
+
+                kitNumbers = new string[allLinesKits.Length - 1];
+                kitNames = new string[allLinesKits.Length - 1];
+
+                for (int i = 1; i < allLinesKits.Length; i++)
+                {
+                    string[] rowKits = allLinesKits[i].Split(new[] { ';' });
+
+                    for (int j = 0; j < 0 + 1; j++)
+                    {
+                        kitNumbers[i - 1] = rowKits[j];
+                    }
+
+                    for (int j = 1; j < 1 + 1; j++)
+                    {
+                        kitNames[i - 1] = rowKits[j];
+                    }
                 }
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void обработатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            button4.Enabled = false;
+            if ((matrixOfDistances != null) && (kitNumbers != null))
+            {
+                sda = null;
 
-            groupBox1.Text = "Load";
-            groupBox2.Text = "Processing";
-            groupBox4.Text = "Clustering";
-            groupBox5.Text = "Highlighting";
+                sda = new DescriptiveAnalysis(matrixOfDistances);
+                sda.Compute();
 
-            button1.Text = "Data";
-            button3.Text = "PCA";
-            button5.Text = "K-means";
+                AnalysisPCA = new AnalysisMethod();
 
-            button2.Text = "1 - Red";
-            button6.Text = "2 - Green";
-            button7.Text = "3 - Black";
-            button8.Text = "Start";
+                if (центровкаToolStripMenuItem.CheckState == CheckState.Checked)
+                {
+                    AnalysisPCA = AnalysisMethod.Center;
+                }
 
-            label9.Text = "Number of clusters:";
+                if (стандартизацияToolStripMenuItem.CheckState == CheckState.Checked)
+                {
+                    AnalysisPCA = AnalysisMethod.Standardize;
+                }
 
-            checkBox1.Text = "Show yourself";
+                pca = new PrincipalComponentAnalysis(sda.Source, AnalysisPCA);
+                pca.Compute();
 
-            radioButton1.Text = "Center";
-            radioButton2.Text = "Standartize";
+                matrixOfCoordinates = pca.Transform(matrixOfDistances, 2);
+                numberOfClusters = 2;
+
+                CreateGraph(zedGraph);
+            }
+            else
+            {
+                string message = "Вы не загрузили матрицы с данными!";
+                string caption = "Нехватка данных!";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                result = MessageBox.Show(message, caption, buttons);
+            }
+        }
+
+        private void обработатьToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (matrixOfCoordinates != null)
+            {
+                transformOfMatrix();
+
+                kmeans = new KMeans(numberOfClusters);
+                kmeans.Compute(mixture);
+
+                int[] classifications = kmeans.Clusters.Nearest(mixture);
+
+                updateGraph(classifications);
+            }
+            else
+            {
+                MessageBoxButtons PCAButtons = MessageBoxButtons.OK;
+                DialogResult PCAResult;
+
+                PCAResult = MessageBox.Show(PCAMmessage, PCACaption, PCAButtons);
+            }
+        }
+
+        private void красныйToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (numberOfClusters < 4)
+            {
+                ClustersNumberResult = MessageBox.Show(ClusterNumberMessage, ClustersNumberCaption, ClustersNumberButtons);
+            }
+            else
+            {
+                classificationsOur = new int[kitNumbers.Length];
+
+                string[] kitsForPaint;
+
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+
+                    for (int i = 0; i < kitsForPaint.Length; i++)
+                    {
+                        for (int j = 1; j < kitNumbers.Length; j++)
+                        {
+                            if (kitNumbers[j] == kitsForPaint[i])
+                            {
+                                classificationsOur[j - 1] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void зеленыйToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (numberOfClusters < 4)
+            {
+                ClustersNumberResult = MessageBox.Show(ClusterNumberMessage, ClustersNumberCaption, ClustersNumberButtons);
+            }
+            else
+            {
+                string[] kitsForPaint;
+
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+
+                    for (int i = 0; i < kitsForPaint.Length; i++)
+                    {
+                        for (int j = 1; j < kitNumbers.Length; j++)
+                        {
+                            if (kitNumbers[j] == kitsForPaint[i])
+                            {
+                                classificationsOur[j - 1] = 2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void черныйToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (numberOfClusters < 4)
+            {
+                ClustersNumberResult = MessageBox.Show(ClusterNumberMessage, ClustersNumberCaption, ClustersNumberButtons);
+            }
+            else
+            {
+                string[] kitsForPaint;
+
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+
+                    for (int i = 0; i < kitsForPaint.Length; i++)
+                    {
+                        for (int j = 1; j < kitNumbers.Length; j++)
+                        {
+                            if (kitNumbers[j] == kitsForPaint[i])
+                            {
+                                classificationsOur[j - 1] = 3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void обработатьToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            updateGraph(classificationsOur);
+        }
+
+        private void центровкаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (стандартизацияToolStripMenuItem.CheckState == CheckState.Checked)
+            {
+                стандартизацияToolStripMenuItem.CheckState = CheckState.Unchecked;
+            }
+
+            центровкаToolStripMenuItem.CheckState = CheckState.Checked;
+        }
+
+        private void стандартизацияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (центровкаToolStripMenuItem.CheckState == CheckState.Checked)
+            {
+                центровкаToolStripMenuItem.CheckState = CheckState.Unchecked;
+            }
+
+            стандартизацияToolStripMenuItem.CheckState = CheckState.Checked;
+        }
+
+        private void eNGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClusterNumberMessage = "To use this feature, number of clusters must be equal to 4!";
+            ClustersNumberCaption = "Too few clusters!";
+
+            PCAMmessage = "At first, you must use PCA-processing.";
+            PCACaption = "Not enough data!";
+
+            файлToolStripMenuItem.Text = "File";
+            открытьToolStripMenuItem.Text = "Open";
+            кластерыToolStripMenuItem.Text = "Clusters";
+            количествоКластеровToolStripMenuItem.Text = "Number of clusters";
+            обработкаToolStripMenuItem.Text = "PCA processing";
+            типВыводаToolStripMenuItem.Text = "Output type";
+            стандартизацияToolStripMenuItem.Text = "Standartize";
+            центровкаToolStripMenuItem.Text = "Center";
+            обработатьToolStripMenuItem.Text = "Process";
+            кластеризацияToolStripMenuItem.Text = "Clusterization";
+            обработатьToolStripMenuItem1.Text = "Process";
+            выделениеЦветомToolStripMenuItem.Text = "Color highlighting";
+            красныйToolStripMenuItem.Text = "1 - Red";
+            зеленыйToolStripMenuItem.Text = "2 - Green";
+            черныйToolStripMenuItem.Text = "3 - Black";
+            обработатьToolStripMenuItem2.Text = "Process";
         }
     }
 }
