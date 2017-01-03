@@ -22,10 +22,20 @@ namespace atDNACluster
         string PCAMmessage = "Сперва Вы должны провести обработку с помощью МГК!";
         string PCACaption = "Нехватка данных!";
 
-        string ClusterNumberMessage = "Для работы этой функции число кластеров должно быть равным 4!";
-        string ClustersNumberCaption = "Слишком мало кластеров!";
-        MessageBoxButtons ClustersNumberButtons = MessageBoxButtons.OK;
-        DialogResult ClustersNumberResult;
+        string NumberOfClustersErrorMessage = "Для работы этой функции число кластеров должно быть равным 4!";
+        string NumberOfClustersErrorCaption = "Неправильное количество кластеров!";
+        MessageBoxButtons NumberOfClustersErrorButtons = MessageBoxButtons.OK;
+        DialogResult NumberOfClustersError;
+
+        string NumberOfPCAClustersErrorMessage = "Сперва нужно запустить МГК при числе кластеров, равном 4!";
+        string NumberOfPCAClustersErrorCaption = "Неправильное количество кластеров!";
+        MessageBoxButtons NumberOfPCAClustersErrorButtons = MessageBoxButtons.OK;
+        DialogResult NumberOfPCAClustersError;
+
+        string NumberOfClusteringClustersErrorMessage = "Сперва нужно запустить кластеризацию К-средних при числе кластеров, равном 4!";
+        string NumberOfClusteringClustersErrorCaption = "Неправильное количество кластеров!";
+        MessageBoxButtons NumberOfClusteringClustersErrorButtons = MessageBoxButtons.OK;
+        DialogResult NumberOfClusteringClustersError;
 
         double[,] matrixOfDistances;
         string[] kitNumbers;
@@ -34,6 +44,8 @@ namespace atDNACluster
         double[][] mixture;
         int[] classificationsOur;
 
+        int LastPCANumberOfClusters;
+        int LastClusteringNumberOfClusters;
         int numberOfClusters = 2;
 
         public Form1()
@@ -248,7 +260,7 @@ namespace atDNACluster
                 pca.Compute();
 
                 matrixOfCoordinates = pca.Transform(matrixOfDistances, 2);
-                numberOfClusters = 2;
+                LastPCANumberOfClusters = numberOfClusters;
 
                 CreateGraph(zedGraph);
             }
@@ -273,6 +285,7 @@ namespace atDNACluster
                 kmeans.Compute(mixture);
 
                 int[] classifications = kmeans.Clusters.Nearest(mixture);
+                LastClusteringNumberOfClusters = numberOfClusters;
 
                 updateGraph(classifications);
             }
@@ -287,30 +300,44 @@ namespace atDNACluster
 
         private void красныйToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (numberOfClusters < 4)
+            if (numberOfClusters != 4)
             {
-                ClustersNumberResult = MessageBox.Show(ClusterNumberMessage, ClustersNumberCaption, ClustersNumberButtons);
+                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, NumberOfClustersErrorButtons);
             }
             else
             {
-                classificationsOur = new int[kitNumbers.Length];
-
-                string[] kitsForPaint;
-
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (LastPCANumberOfClusters != 4)
                 {
-                    kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                    for (int i = 0; i < kitsForPaint.Length; i++)
+                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, NumberOfPCAClustersErrorButtons);
+                }
+                else
+                {
+                    if (LastClusteringNumberOfClusters != 4)
                     {
-                        for (int j = 1; j < kitNumbers.Length; j++)
+                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, NumberOfClusteringClustersErrorButtons);
+                    }
+                    else
+                    {
+                        classificationsOur = new int[kitNumbers.Length];
+
+                        string[] kitsForPaint;
+
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
-                            if (kitNumbers[j] == kitsForPaint[i])
+                            kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+
+                            for (int i = 0; i < kitsForPaint.Length; i++)
                             {
-                                classificationsOur[j - 1] = 1;
+                                for (int j = 1; j < kitNumbers.Length; j++)
+                                {
+                                    if (kitNumbers[j] == kitsForPaint[i])
+                                    {
+                                        classificationsOur[j - 1] = 1;
+                                    }
+                                }
                             }
                         }
                     }
@@ -320,28 +347,42 @@ namespace atDNACluster
 
         private void зеленыйToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (numberOfClusters < 4)
+            if (numberOfClusters != 4)
             {
-                ClustersNumberResult = MessageBox.Show(ClusterNumberMessage, ClustersNumberCaption, ClustersNumberButtons);
+                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, NumberOfClustersErrorButtons);
             }
             else
             {
-                string[] kitsForPaint;
-
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (LastPCANumberOfClusters != 4)
                 {
-                    kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                    for (int i = 0; i < kitsForPaint.Length; i++)
+                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, NumberOfPCAClustersErrorButtons);
+                }
+                else
+                {
+                    if (LastClusteringNumberOfClusters != 4)
                     {
-                        for (int j = 1; j < kitNumbers.Length; j++)
+                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, NumberOfClusteringClustersErrorButtons);
+                    }
+                    else
+                    {
+                        string[] kitsForPaint;
+
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
-                            if (kitNumbers[j] == kitsForPaint[i])
+                            kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+
+                            for (int i = 0; i < kitsForPaint.Length; i++)
                             {
-                                classificationsOur[j - 1] = 2;
+                                for (int j = 1; j < kitNumbers.Length; j++)
+                                {
+                                    if (kitNumbers[j] == kitsForPaint[i])
+                                    {
+                                        classificationsOur[j - 1] = 2;
+                                    }
+                                }
                             }
                         }
                     }
@@ -351,28 +392,42 @@ namespace atDNACluster
 
         private void черныйToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (numberOfClusters < 4)
+            if (numberOfClusters != 4)
             {
-                ClustersNumberResult = MessageBox.Show(ClusterNumberMessage, ClustersNumberCaption, ClustersNumberButtons);
+                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, NumberOfClustersErrorButtons);
             }
             else
             {
-                string[] kitsForPaint;
-
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (LastPCANumberOfClusters != 4)
                 {
-                    kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                    for (int i = 0; i < kitsForPaint.Length; i++)
+                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, NumberOfPCAClustersErrorButtons);
+                }
+                else
+                {
+                    if (LastClusteringNumberOfClusters != 4)
                     {
-                        for (int j = 1; j < kitNumbers.Length; j++)
+                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, NumberOfClusteringClustersErrorButtons);
+                    }
+                    else
+                    {
+                        string[] kitsForPaint;
+
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
-                            if (kitNumbers[j] == kitsForPaint[i])
+                            kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+
+                            for (int i = 0; i < kitsForPaint.Length; i++)
                             {
-                                classificationsOur[j - 1] = 3;
+                                for (int j = 1; j < kitNumbers.Length; j++)
+                                {
+                                    if (kitNumbers[j] == kitsForPaint[i])
+                                    {
+                                        classificationsOur[j - 1] = 3;
+                                    }
+                                }
                             }
                         }
                     }
@@ -407,8 +462,14 @@ namespace atDNACluster
 
         private void eNGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ClusterNumberMessage = "To use this feature, number of clusters must be equal to 4!";
-            ClustersNumberCaption = "Too few clusters!";
+            NumberOfClustersErrorMessage = "To use this feature, number of clusters must be equal to 4!";
+            NumberOfClustersErrorCaption = "Wrong number of clusters!";
+
+            NumberOfPCAClustersErrorMessage = "First, you need to run PCA when the number of clusters is equal to 4!";
+            NumberOfPCAClustersErrorCaption = "Wrong number of clusters!";
+
+            NumberOfClusteringClustersErrorMessage = "First, you need to run K-means clustering when the number of clusters is equal to 4!";
+            NumberOfClusteringClustersErrorCaption = "Wrong number of clusters!";
 
             PCAMmessage = "At first, you must use PCA-processing.";
             PCACaption = "Not enough data!";
@@ -417,18 +478,25 @@ namespace atDNACluster
             открытьToolStripMenuItem.Text = "Open";
             кластерыToolStripMenuItem.Text = "Clusters";
             количествоКластеровToolStripMenuItem.Text = "Number of clusters";
-            обработкаToolStripMenuItem.Text = "PCA processing";
+            обработкаToolStripMenuItem.Text = "Processing (PCA)";
             типВыводаToolStripMenuItem.Text = "Output type";
             стандартизацияToolStripMenuItem.Text = "Standartize";
             центровкаToolStripMenuItem.Text = "Center";
             обработатьToolStripMenuItem.Text = "Process";
-            кластеризацияToolStripMenuItem.Text = "Clusterization";
+            кластеризацияToolStripMenuItem.Text = "Clusterization (K-means)";
             обработатьToolStripMenuItem1.Text = "Process";
             выделениеЦветомToolStripMenuItem.Text = "Color highlighting";
             красныйToolStripMenuItem.Text = "1 - Red";
             зеленыйToolStripMenuItem.Text = "2 - Green";
             черныйToolStripMenuItem.Text = "3 - Black";
             обработатьToolStripMenuItem2.Text = "Process";
+        }
+
+        private void количествоКластеровToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator();
+            ClustersRegulatorWindow.ShowDialog();
+            numberOfClusters = ClustersRegulatorWindow.numberOfClusters;
         }
     }
 }

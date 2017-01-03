@@ -92,6 +92,7 @@
             this.количествоКластеровToolStripMenuItem.Name = "количествоКластеровToolStripMenuItem";
             this.количествоКластеровToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.количествоКластеровToolStripMenuItem.Text = "Количество кластеров";
+            this.количествоКластеровToolStripMenuItem.Click += new System.EventHandler(this.количествоКластеровToolStripMenuItem_Click);
             // 
             // обработкаToolStripMenuItem
             // 
@@ -99,8 +100,8 @@
             this.типВыводаToolStripMenuItem,
             this.обработатьToolStripMenuItem});
             this.обработкаToolStripMenuItem.Name = "обработкаToolStripMenuItem";
-            this.обработкаToolStripMenuItem.Size = new System.Drawing.Size(106, 20);
-            this.обработкаToolStripMenuItem.Text = "Обработка МГК";
+            this.обработкаToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
+            this.обработкаToolStripMenuItem.Text = "Обработка (МГК)";
             // 
             // типВыводаToolStripMenuItem
             // 
@@ -141,8 +142,8 @@
             this.кластеризацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.обработатьToolStripMenuItem1});
             this.кластеризацияToolStripMenuItem.Name = "кластеризацияToolStripMenuItem";
-            this.кластеризацияToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
-            this.кластеризацияToolStripMenuItem.Text = "Кластеризация";
+            this.кластеризацияToolStripMenuItem.Size = new System.Drawing.Size(168, 20);
+            this.кластеризацияToolStripMenuItem.Text = "Кластеризация (К-средних)";
             // 
             // обработатьToolStripMenuItem1
             // 
@@ -205,7 +206,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "atDNA Clusterer 0.0.5";
+            this.Text = "atDNA Clusterer v0.0.6";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
