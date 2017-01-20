@@ -29,22 +29,23 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.кластерыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.количествоКластеровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.обработкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.типВыводаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.центровкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.стандартизацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.обработатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.кластеризацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.обработатьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.выделениеЦветомToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.красныйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.зеленыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.черныйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.обработатьToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьFTDNAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clustersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clustersNumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.processingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.outputTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.centerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.standartizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clusterizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.processToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorHighlightningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.greenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.blackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.processToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.eNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -52,11 +53,11 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.файлToolStripMenuItem,
-            this.кластерыToolStripMenuItem,
-            this.обработкаToolStripMenuItem,
-            this.кластеризацияToolStripMenuItem,
-            this.выделениеЦветомToolStripMenuItem,
+            this.fileToolStripMenuItem,
+            this.clustersToolStripMenuItem,
+            this.processingToolStripMenuItem,
+            this.clusterizationToolStripMenuItem,
+            this.colorHighlightningToolStripMenuItem,
             this.eNGToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -64,132 +65,140 @@
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // файлToolStripMenuItem
+            // fileToolStripMenuItem
             // 
-            this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.открытьToolStripMenuItem});
-            this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.файлToolStripMenuItem.Text = "Файл";
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.открытьFTDNAToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.fileToolStripMenuItem.Text = "Файл";
             // 
-            // открытьToolStripMenuItem
+            // openToolStripMenuItem
             // 
-            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
-            this.открытьToolStripMenuItem.Text = "Открыть";
-            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.openToolStripMenuItem.Text = "Открыть (GedMatch)";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
-            // кластерыToolStripMenuItem
+            // открытьFTDNAToolStripMenuItem
             // 
-            this.кластерыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.количествоКластеровToolStripMenuItem});
-            this.кластерыToolStripMenuItem.Name = "кластерыToolStripMenuItem";
-            this.кластерыToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
-            this.кластерыToolStripMenuItem.Text = "Кластеры";
+            this.открытьFTDNAToolStripMenuItem.Name = "открытьFTDNAToolStripMenuItem";
+            this.открытьFTDNAToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.открытьFTDNAToolStripMenuItem.Text = "Открыть (FTDNA)";
+            this.открытьFTDNAToolStripMenuItem.Click += new System.EventHandler(this.openFTDNAToolStripMenuItem_Click);
             // 
-            // количествоКластеровToolStripMenuItem
+            // clustersToolStripMenuItem
             // 
-            this.количествоКластеровToolStripMenuItem.Name = "количествоКластеровToolStripMenuItem";
-            this.количествоКластеровToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.количествоКластеровToolStripMenuItem.Text = "Количество кластеров";
-            this.количествоКластеровToolStripMenuItem.Click += new System.EventHandler(this.количествоКластеровToolStripMenuItem_Click);
+            this.clustersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clustersNumberToolStripMenuItem});
+            this.clustersToolStripMenuItem.Name = "clustersToolStripMenuItem";
+            this.clustersToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.clustersToolStripMenuItem.Text = "Кластеры";
             // 
-            // обработкаToolStripMenuItem
+            // clustersNumberToolStripMenuItem
             // 
-            this.обработкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.типВыводаToolStripMenuItem,
-            this.обработатьToolStripMenuItem});
-            this.обработкаToolStripMenuItem.Name = "обработкаToolStripMenuItem";
-            this.обработкаToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
-            this.обработкаToolStripMenuItem.Text = "Обработка (МГК)";
+            this.clustersNumberToolStripMenuItem.Name = "clustersNumberToolStripMenuItem";
+            this.clustersNumberToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.clustersNumberToolStripMenuItem.Text = "Количество кластеров";
+            this.clustersNumberToolStripMenuItem.Click += new System.EventHandler(this.clustersNumberToolStripMenuItem_Click);
             // 
-            // типВыводаToolStripMenuItem
+            // processingToolStripMenuItem
             // 
-            this.типВыводаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.центровкаToolStripMenuItem,
-            this.стандартизацияToolStripMenuItem});
-            this.типВыводаToolStripMenuItem.Name = "типВыводаToolStripMenuItem";
-            this.типВыводаToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.типВыводаToolStripMenuItem.Text = "Тип вывода";
+            this.processingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.outputTypeToolStripMenuItem,
+            this.processToolStripMenuItem});
+            this.processingToolStripMenuItem.Name = "processingToolStripMenuItem";
+            this.processingToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
+            this.processingToolStripMenuItem.Text = "Обработка (МГК)";
             // 
-            // центровкаToolStripMenuItem
+            // outputTypeToolStripMenuItem
             // 
-            this.центровкаToolStripMenuItem.CheckOnClick = true;
-            this.центровкаToolStripMenuItem.Name = "центровкаToolStripMenuItem";
-            this.центровкаToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.центровкаToolStripMenuItem.Text = "Центровка";
-            this.центровкаToolStripMenuItem.Click += new System.EventHandler(this.центровкаToolStripMenuItem_Click);
+            this.outputTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.centerToolStripMenuItem,
+            this.standartizeToolStripMenuItem});
+            this.outputTypeToolStripMenuItem.Name = "outputTypeToolStripMenuItem";
+            this.outputTypeToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.outputTypeToolStripMenuItem.Text = "Тип вывода";
             // 
-            // стандартизацияToolStripMenuItem
+            // centerToolStripMenuItem
             // 
-            this.стандартизацияToolStripMenuItem.Checked = true;
-            this.стандартизацияToolStripMenuItem.CheckOnClick = true;
-            this.стандартизацияToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.стандартизацияToolStripMenuItem.Name = "стандартизацияToolStripMenuItem";
-            this.стандартизацияToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.стандартизацияToolStripMenuItem.Text = "Стандартизация";
-            this.стандартизацияToolStripMenuItem.Click += new System.EventHandler(this.стандартизацияToolStripMenuItem_Click);
+            this.centerToolStripMenuItem.CheckOnClick = true;
+            this.centerToolStripMenuItem.Name = "centerToolStripMenuItem";
+            this.centerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.centerToolStripMenuItem.Text = "Центровка";
+            this.centerToolStripMenuItem.Click += new System.EventHandler(this.centerToolStripMenuItem_Click);
             // 
-            // обработатьToolStripMenuItem
+            // standartizeToolStripMenuItem
             // 
-            this.обработатьToolStripMenuItem.Name = "обработатьToolStripMenuItem";
-            this.обработатьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.обработатьToolStripMenuItem.Text = "Обработать";
-            this.обработатьToolStripMenuItem.Click += new System.EventHandler(this.обработатьToolStripMenuItem_Click);
+            this.standartizeToolStripMenuItem.Checked = true;
+            this.standartizeToolStripMenuItem.CheckOnClick = true;
+            this.standartizeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.standartizeToolStripMenuItem.Name = "standartizeToolStripMenuItem";
+            this.standartizeToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.standartizeToolStripMenuItem.Text = "Стандартизация";
+            this.standartizeToolStripMenuItem.Click += new System.EventHandler(this.standartizeToolStripMenuItem_Click);
             // 
-            // кластеризацияToolStripMenuItem
+            // processToolStripMenuItem
             // 
-            this.кластеризацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.обработатьToolStripMenuItem1});
-            this.кластеризацияToolStripMenuItem.Name = "кластеризацияToolStripMenuItem";
-            this.кластеризацияToolStripMenuItem.Size = new System.Drawing.Size(168, 20);
-            this.кластеризацияToolStripMenuItem.Text = "Кластеризация (К-средних)";
+            this.processToolStripMenuItem.Name = "processToolStripMenuItem";
+            this.processToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.processToolStripMenuItem.Text = "Обработать";
+            this.processToolStripMenuItem.Click += new System.EventHandler(this.processToolStripMenuItem_Click);
             // 
-            // обработатьToolStripMenuItem1
+            // clusterizationToolStripMenuItem
             // 
-            this.обработатьToolStripMenuItem1.Name = "обработатьToolStripMenuItem1";
-            this.обработатьToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.обработатьToolStripMenuItem1.Text = "Обработать";
-            this.обработатьToolStripMenuItem1.Click += new System.EventHandler(this.обработатьToolStripMenuItem1_Click);
+            this.clusterizationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.processToolStripMenuItem1});
+            this.clusterizationToolStripMenuItem.Name = "clusterizationToolStripMenuItem";
+            this.clusterizationToolStripMenuItem.Size = new System.Drawing.Size(168, 20);
+            this.clusterizationToolStripMenuItem.Text = "Кластеризация (К-средних)";
             // 
-            // выделениеЦветомToolStripMenuItem
+            // processToolStripMenuItem1
             // 
-            this.выделениеЦветомToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.красныйToolStripMenuItem,
-            this.зеленыйToolStripMenuItem,
-            this.черныйToolStripMenuItem,
-            this.обработатьToolStripMenuItem2});
-            this.выделениеЦветомToolStripMenuItem.Name = "выделениеЦветомToolStripMenuItem";
-            this.выделениеЦветомToolStripMenuItem.Size = new System.Drawing.Size(123, 20);
-            this.выделениеЦветомToolStripMenuItem.Text = "Выделение цветом";
+            this.processToolStripMenuItem1.Name = "processToolStripMenuItem1";
+            this.processToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
+            this.processToolStripMenuItem1.Text = "Обработать";
+            this.processToolStripMenuItem1.Click += new System.EventHandler(this.processToolStripMenuItem1_Click);
             // 
-            // красныйToolStripMenuItem
+            // colorHighlightningToolStripMenuItem
             // 
-            this.красныйToolStripMenuItem.Name = "красныйToolStripMenuItem";
-            this.красныйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.красныйToolStripMenuItem.Text = "1 - Красный";
-            this.красныйToolStripMenuItem.Click += new System.EventHandler(this.красныйToolStripMenuItem_Click);
+            this.colorHighlightningToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.redToolStripMenuItem,
+            this.greenToolStripMenuItem,
+            this.blackToolStripMenuItem,
+            this.processToolStripMenuItem2});
+            this.colorHighlightningToolStripMenuItem.Name = "colorHighlightningToolStripMenuItem";
+            this.colorHighlightningToolStripMenuItem.Size = new System.Drawing.Size(123, 20);
+            this.colorHighlightningToolStripMenuItem.Text = "Выделение цветом";
             // 
-            // зеленыйToolStripMenuItem
+            // redToolStripMenuItem
             // 
-            this.зеленыйToolStripMenuItem.Name = "зеленыйToolStripMenuItem";
-            this.зеленыйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.зеленыйToolStripMenuItem.Text = "2 - Зеленый";
-            this.зеленыйToolStripMenuItem.Click += new System.EventHandler(this.зеленыйToolStripMenuItem_Click);
+            this.redToolStripMenuItem.Name = "redToolStripMenuItem";
+            this.redToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.redToolStripMenuItem.Text = "1 - Красный";
+            this.redToolStripMenuItem.Click += new System.EventHandler(this.redToolStripMenuItem_Click);
             // 
-            // черныйToolStripMenuItem
+            // greenToolStripMenuItem
             // 
-            this.черныйToolStripMenuItem.Name = "черныйToolStripMenuItem";
-            this.черныйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.черныйToolStripMenuItem.Text = "3 - Черный";
-            this.черныйToolStripMenuItem.Click += new System.EventHandler(this.черныйToolStripMenuItem_Click);
+            this.greenToolStripMenuItem.Name = "greenToolStripMenuItem";
+            this.greenToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.greenToolStripMenuItem.Text = "2 - Зеленый";
+            this.greenToolStripMenuItem.Click += new System.EventHandler(this.greenToolStripMenuItem_Click);
             // 
-            // обработатьToolStripMenuItem2
+            // blackToolStripMenuItem
             // 
-            this.обработатьToolStripMenuItem2.Name = "обработатьToolStripMenuItem2";
-            this.обработатьToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
-            this.обработатьToolStripMenuItem2.Text = "Обработать";
-            this.обработатьToolStripMenuItem2.Click += new System.EventHandler(this.обработатьToolStripMenuItem2_Click);
+            this.blackToolStripMenuItem.Name = "blackToolStripMenuItem";
+            this.blackToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.blackToolStripMenuItem.Text = "3 - Черный";
+            this.blackToolStripMenuItem.Click += new System.EventHandler(this.blackToolStripMenuItem_Click);
+            // 
+            // processToolStripMenuItem2
+            // 
+            this.processToolStripMenuItem2.Name = "processToolStripMenuItem2";
+            this.processToolStripMenuItem2.Size = new System.Drawing.Size(140, 22);
+            this.processToolStripMenuItem2.Text = "Обработать";
+            this.processToolStripMenuItem2.Click += new System.EventHandler(this.processToolStripMenuItem2_Click);
             // 
             // eNGToolStripMenuItem
             // 
@@ -206,7 +215,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "atDNA Clusterer v0.0.6";
+            this.Text = "atDNA Clusterer v0.0.7";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -217,23 +226,24 @@
 
         #endregion
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem кластерыToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem количествоКластеровToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem обработкаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem типВыводаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem центровкаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem стандартизацияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem обработатьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem кластеризацияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem обработатьToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem выделениеЦветомToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem красныйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem зеленыйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem черныйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem обработатьToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clustersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clustersNumberToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem processingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem outputTypeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem centerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem standartizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clusterizationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem colorHighlightningToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem redToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem greenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem blackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem eNGToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem открытьFTDNAToolStripMenuItem;
     }
 }
 

@@ -6,6 +6,8 @@ using ZedGraph;
 using Accord.Statistics.Analysis;
 using Accord.MachineLearning;
 using Accord.Controls;
+using System.Web.Script.Serialization;
+using System.Collections.Generic;
 
 namespace atDNACluster
 {
@@ -156,10 +158,7 @@ namespace atDNACluster
             {
                 for (int j = 0; j < matrixOfDistances.GetLength(0); j++)
                 {
-                    if (matrixOfDistances[i, j] == 0)
-                    {
-                        matrixOfDistances[i, j] = 99;
-                    }
+                    matrixOfDistances[i, j] = 99;
                 }
             }
         }
@@ -184,7 +183,7 @@ namespace atDNACluster
 
         }
 
-        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             matrixOfDistances = null;
             kitNumbers = null;
@@ -235,7 +234,7 @@ namespace atDNACluster
             }
         }
 
-        private void обработатьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void processToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if ((matrixOfDistances != null) && (kitNumbers != null))
             {
@@ -246,12 +245,12 @@ namespace atDNACluster
 
                 AnalysisPCA = new AnalysisMethod();
 
-                if (центровкаToolStripMenuItem.CheckState == CheckState.Checked)
+                if (centerToolStripMenuItem.CheckState == CheckState.Checked)
                 {
                     AnalysisPCA = AnalysisMethod.Center;
                 }
 
-                if (стандартизацияToolStripMenuItem.CheckState == CheckState.Checked)
+                if (standartizeToolStripMenuItem.CheckState == CheckState.Checked)
                 {
                     AnalysisPCA = AnalysisMethod.Standardize;
                 }
@@ -275,7 +274,7 @@ namespace atDNACluster
             }
         }
 
-        private void обработатьToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void processToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (matrixOfCoordinates != null)
             {
@@ -298,7 +297,7 @@ namespace atDNACluster
             }
         }
 
-        private void красныйToolStripMenuItem_Click(object sender, EventArgs e)
+        private void redToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (numberOfClusters != 4)
             {
@@ -345,7 +344,7 @@ namespace atDNACluster
             }
         }
 
-        private void зеленыйToolStripMenuItem_Click(object sender, EventArgs e)
+        private void greenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (numberOfClusters != 4)
             {
@@ -390,7 +389,7 @@ namespace atDNACluster
             }
         }
 
-        private void черныйToolStripMenuItem_Click(object sender, EventArgs e)
+        private void blackToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (numberOfClusters != 4)
             {
@@ -435,29 +434,29 @@ namespace atDNACluster
             }
         }
 
-        private void обработатьToolStripMenuItem2_Click(object sender, EventArgs e)
+        private void processToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             updateGraph(classificationsOur);
         }
 
-        private void центровкаToolStripMenuItem_Click(object sender, EventArgs e)
+        private void centerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (стандартизацияToolStripMenuItem.CheckState == CheckState.Checked)
+            if (standartizeToolStripMenuItem.CheckState == CheckState.Checked)
             {
-                стандартизацияToolStripMenuItem.CheckState = CheckState.Unchecked;
+                standartizeToolStripMenuItem.CheckState = CheckState.Unchecked;
             }
 
-            центровкаToolStripMenuItem.CheckState = CheckState.Checked;
+            centerToolStripMenuItem.CheckState = CheckState.Checked;
         }
 
-        private void стандартизацияToolStripMenuItem_Click(object sender, EventArgs e)
+        private void standartizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (центровкаToolStripMenuItem.CheckState == CheckState.Checked)
+            if (centerToolStripMenuItem.CheckState == CheckState.Checked)
             {
-                центровкаToolStripMenuItem.CheckState = CheckState.Unchecked;
+                centerToolStripMenuItem.CheckState = CheckState.Unchecked;
             }
 
-            стандартизацияToolStripMenuItem.CheckState = CheckState.Checked;
+            standartizeToolStripMenuItem.CheckState = CheckState.Checked;
         }
 
         private void eNGToolStripMenuItem_Click(object sender, EventArgs e)
@@ -474,29 +473,112 @@ namespace atDNACluster
             PCAMmessage = "At first, you must use PCA-processing.";
             PCACaption = "Not enough data!";
 
-            файлToolStripMenuItem.Text = "File";
-            открытьToolStripMenuItem.Text = "Open";
-            кластерыToolStripMenuItem.Text = "Clusters";
-            количествоКластеровToolStripMenuItem.Text = "Number of clusters";
-            обработкаToolStripMenuItem.Text = "Processing (PCA)";
-            типВыводаToolStripMenuItem.Text = "Output type";
-            стандартизацияToolStripMenuItem.Text = "Standartize";
-            центровкаToolStripMenuItem.Text = "Center";
-            обработатьToolStripMenuItem.Text = "Process";
-            кластеризацияToolStripMenuItem.Text = "Clusterization (K-means)";
-            обработатьToolStripMenuItem1.Text = "Process";
-            выделениеЦветомToolStripMenuItem.Text = "Color highlighting";
-            красныйToolStripMenuItem.Text = "1 - Red";
-            зеленыйToolStripMenuItem.Text = "2 - Green";
-            черныйToolStripMenuItem.Text = "3 - Black";
-            обработатьToolStripMenuItem2.Text = "Process";
+            fileToolStripMenuItem.Text = "File";
+            openToolStripMenuItem.Text = "Open";
+            clustersToolStripMenuItem.Text = "Clusters";
+            clustersNumberToolStripMenuItem.Text = "Number of clusters";
+            processingToolStripMenuItem.Text = "Processing (PCA)";
+            outputTypeToolStripMenuItem.Text = "Output type";
+            standartizeToolStripMenuItem.Text = "Standartize";
+            centerToolStripMenuItem.Text = "Center";
+            processToolStripMenuItem.Text = "Process";
+            clusterizationToolStripMenuItem.Text = "Clusterization (K-means)";
+            processToolStripMenuItem1.Text = "Process";
+            colorHighlightningToolStripMenuItem.Text = "Color highlighting";
+            redToolStripMenuItem.Text = "1 - Red";
+            greenToolStripMenuItem.Text = "2 - Green";
+            blackToolStripMenuItem.Text = "3 - Black";
+            processToolStripMenuItem2.Text = "Process";
         }
 
-        private void количествоКластеровToolStripMenuItem_Click(object sender, EventArgs e)
+        private void clustersNumberToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator();
             ClustersRegulatorWindow.ShowDialog();
             numberOfClusters = ClustersRegulatorWindow.numberOfClusters;
+        }
+
+        double convertTotalCMToTMRCA(double TotalCM)
+        {
+            double TMRCA = -0.722 * Math.Log(TotalCM) + 6.8657;
+
+            return TMRCA;
+        }
+
+        public class Match
+        {
+            public int matchResultId { get; set; }
+            public string eKitNum { get; set; }
+            public string firstName { get; set; }
+            public string middleName { get; set; }
+            public string lastName { get; set; }
+            public double totalCM { get; set; }
+            public double longestCM { get; set; }
+        }
+
+        public class Common
+        {
+            public int resultId2 { get; set; }
+            public double totalCM { get; set; }
+        }
+
+        public class CommonMatch
+        {
+            public int matchResultId { get; set; }
+            public List<Common> commonMatches { get; set; }
+        }
+
+        private void openFTDNAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string jsonMatchesRaw = File.ReadAllText("C://Users//Daemon//Downloads//ДНК//381905_m.json");
+            JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
+            serializerMatches.MaxJsonLength = int.MaxValue;
+            Match[] Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
+
+            matrixOfDistances = null;
+            kitNames = null;
+
+            matrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
+            kitNames = new string[Matches.Length + 1];
+            kitNumbers = new string[Matches.Length + 1];
+
+            replaceZeros();
+            fillDiagonalByZeros();
+
+            for (int i = 1; i < matrixOfDistances.GetLength(0); i++)
+            {
+                matrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                matrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                kitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
+                kitNumbers[i] = Matches[i - 1].eKitNum;
+            }
+
+            //--------------------------------------------------------------------------------------------------
+
+            string jsonCommonMatchesRaw = File.ReadAllText("C://Users//Daemon//Downloads//ДНК//381905_cm.json");
+            JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
+            serializerCommonMatches.MaxJsonLength = int.MaxValue;
+            CommonMatch[] CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
+
+            for (int i = 0; i < Matches.Length; i++)
+            {
+                for (int j = 0; j < CommonMatches.Length; j++)
+                {
+                    if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
+                    {
+                        for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
+                        {
+                            for (int m = 0; m < Matches.Length; m++)
+                            {
+                                if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
+                                {
+                                    matrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
