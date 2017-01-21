@@ -2,12 +2,16 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Web.Script.Serialization;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+
 using ZedGraph;
+
 using Accord.Statistics.Analysis;
 using Accord.MachineLearning;
 using Accord.Controls;
-using System.Web.Script.Serialization;
-using System.Collections.Generic;
 
 namespace atDNACluster
 {
@@ -21,22 +25,23 @@ namespace atDNACluster
         DescriptiveAnalysis sda;
         AnalysisMethod AnalysisPCA;
 
+        string DataReceivedMessage = "Данные успешно получены с сервера!";
+        string DataReceivedCaption = "Успех!";
+        DialogResult result;
+
         string PCAMmessage = "Сперва Вы должны провести обработку с помощью МГК!";
         string PCACaption = "Нехватка данных!";
 
         string NumberOfClustersErrorMessage = "Для работы этой функции число кластеров должно быть равным 4!";
         string NumberOfClustersErrorCaption = "Неправильное количество кластеров!";
-        MessageBoxButtons NumberOfClustersErrorButtons = MessageBoxButtons.OK;
         DialogResult NumberOfClustersError;
 
         string NumberOfPCAClustersErrorMessage = "Сперва нужно запустить МГК при числе кластеров, равном 4!";
         string NumberOfPCAClustersErrorCaption = "Неправильное количество кластеров!";
-        MessageBoxButtons NumberOfPCAClustersErrorButtons = MessageBoxButtons.OK;
         DialogResult NumberOfPCAClustersError;
 
         string NumberOfClusteringClustersErrorMessage = "Сперва нужно запустить кластеризацию К-средних при числе кластеров, равном 4!";
         string NumberOfClusteringClustersErrorCaption = "Неправильное количество кластеров!";
-        MessageBoxButtons NumberOfClusteringClustersErrorButtons = MessageBoxButtons.OK;
         DialogResult NumberOfClusteringClustersError;
 
         double[,] matrixOfDistances;
@@ -132,6 +137,7 @@ namespace atDNACluster
 
             string kit = 0.ToString();
             string name = 0.ToString();
+            string distance = 0.ToString();
 
             for (int i = 0; i < matrixOfCoordinates.GetLength(0); i++)
             {
@@ -139,10 +145,11 @@ namespace atDNACluster
                 {
                     kit = kitNumbers[i];
                     name = kitNames[i];
+                    distance = matrixOfDistances[0, i].ToString();
                 }
             }
 
-            string result = string.Format("X: {0:F3}\nY: {1:F3}\nKit: {2:F3}\nName: {3:F3}", point.X, point.Y, kit, name);
+            string result = string.Format("X: {0:F3}\nY: {1:F3}\nKit: {2:F3}\nName: {3:F3}\nTMRCA: {4:F3}", point.X, point.Y, kit, name, distance);
 
             return result;
         }
@@ -301,19 +308,19 @@ namespace atDNACluster
         {
             if (numberOfClusters != 4)
             {
-                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, NumberOfClustersErrorButtons);
+                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, MessageBoxButtons.OK);
             }
             else
             {
                 if (LastPCANumberOfClusters != 4)
                 {
-                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, NumberOfPCAClustersErrorButtons);
+                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, MessageBoxButtons.OK);
                 }
                 else
                 {
                     if (LastClusteringNumberOfClusters != 4)
                     {
-                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, NumberOfClusteringClustersErrorButtons);
+                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, MessageBoxButtons.OK);
                     }
                     else
                     {
@@ -348,19 +355,19 @@ namespace atDNACluster
         {
             if (numberOfClusters != 4)
             {
-                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, NumberOfClustersErrorButtons);
+                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, MessageBoxButtons.OK);
             }
             else
             {
                 if (LastPCANumberOfClusters != 4)
                 {
-                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, NumberOfPCAClustersErrorButtons);
+                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, MessageBoxButtons.OK);
                 }
                 else
                 {
                     if (LastClusteringNumberOfClusters != 4)
                     {
-                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, NumberOfClusteringClustersErrorButtons);
+                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, MessageBoxButtons.OK);
                     }
                     else
                     {
@@ -393,19 +400,19 @@ namespace atDNACluster
         {
             if (numberOfClusters != 4)
             {
-                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, NumberOfClustersErrorButtons);
+                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, MessageBoxButtons.OK);
             }
             else
             {
                 if (LastPCANumberOfClusters != 4)
                 {
-                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, NumberOfPCAClustersErrorButtons);
+                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, MessageBoxButtons.OK);
                 }
                 else
                 {
                     if (LastClusteringNumberOfClusters != 4)
                     {
-                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, NumberOfClusteringClustersErrorButtons);
+                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, MessageBoxButtons.OK);
                     }
                     else
                     {
@@ -461,6 +468,9 @@ namespace atDNACluster
 
         private void eNGToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DataReceivedMessage = "The data was successfully received from the server!";
+            DataReceivedCaption = "Success!";
+
             NumberOfClustersErrorMessage = "To use this feature, number of clusters must be equal to 4!";
             NumberOfClustersErrorCaption = "Wrong number of clusters!";
 
@@ -530,7 +540,21 @@ namespace atDNACluster
 
         private void openFTDNAToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string jsonMatchesRaw = File.ReadAllText("C://Users//Daemon//Downloads//ДНК//381905_m.json");
+            String KitNumber;
+            String PassWord;
+
+            Authorization AuthorizationWindow = new Authorization();
+            AuthorizationWindow.ShowDialog();
+            KitNumber = AuthorizationWindow.KitNumber;
+            PassWord = AuthorizationWindow.PassWord;
+
+            WebClient client = new WebClient();
+            string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(KitNumber + ":" + PassWord));
+            client.Headers[HttpRequestHeader.Authorization] = "Basic " + credentials;
+
+            string url = "https://www.familytreedna.com/api/family-finder/matches";
+            var jsonMatchesRaw = client.DownloadString(url);
+
             JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
             serializerMatches.MaxJsonLength = int.MaxValue;
             Match[] Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
@@ -555,7 +579,9 @@ namespace atDNACluster
 
             //--------------------------------------------------------------------------------------------------
 
-            string jsonCommonMatchesRaw = File.ReadAllText("C://Users//Daemon//Downloads//ДНК//381905_cm.json");
+            string url2 = "https://www.familytreedna.com/api/family-finder/matches-common";
+            var jsonCommonMatchesRaw = client.DownloadString(url2);
+
             JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
             serializerCommonMatches.MaxJsonLength = int.MaxValue;
             CommonMatch[] CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
@@ -578,6 +604,11 @@ namespace atDNACluster
                         }
                     }
                 }
+            }
+
+            if (jsonMatchesRaw != null & jsonCommonMatchesRaw != null)
+            {
+                result = MessageBox.Show(DataReceivedMessage, DataReceivedCaption, MessageBoxButtons.OK);
             }
         }
     }
