@@ -27,7 +27,11 @@ namespace atDNACluster
 
         string DataReceivedMessage = "Данные успешно получены с сервера!";
         string DataReceivedCaption = "Успех!";
-        DialogResult result;
+        DialogResult DataReceivedResult;
+
+        string LoginErrorMessage = "Неправильный логин и/или пароль!";
+        string LoginErrorCaption = "Ошибка!";
+        DialogResult LoginErrorResult;
 
         string PCAMmessage = "Сперва Вы должны провести обработку с помощью МГК!";
         string PCACaption = "Нехватка данных!";
@@ -471,6 +475,9 @@ namespace atDNACluster
             DataReceivedMessage = "The data was successfully received from the server!";
             DataReceivedCaption = "Success!";
 
+            LoginErrorMessage = "Wrong username and / or password!";
+            LoginErrorCaption = "Error!";
+
             NumberOfClustersErrorMessage = "To use this feature, number of clusters must be equal to 4!";
             NumberOfClustersErrorCaption = "Wrong number of clusters!";
 
@@ -548,67 +555,77 @@ namespace atDNACluster
             KitNumber = AuthorizationWindow.KitNumber;
             PassWord = AuthorizationWindow.PassWord;
 
-            WebClient client = new WebClient();
-            string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(KitNumber + ":" + PassWord));
-            client.Headers[HttpRequestHeader.Authorization] = "Basic " + credentials;
-
-            string url = "https://www.familytreedna.com/api/family-finder/matches";
-            var jsonMatchesRaw = client.DownloadString(url);
-
-            JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
-            serializerMatches.MaxJsonLength = int.MaxValue;
-            Match[] Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
-
-            matrixOfDistances = null;
-            kitNames = null;
-
-            matrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
-            kitNames = new string[Matches.Length + 1];
-            kitNumbers = new string[Matches.Length + 1];
-
-            replaceZeros();
-            fillDiagonalByZeros();
-
-            for (int i = 1; i < matrixOfDistances.GetLength(0); i++)
+            if (KitNumber != null & PassWord != null)
             {
-                matrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                matrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                kitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
-                kitNumbers[i] = Matches[i - 1].eKitNum;
-            }
-
-            //--------------------------------------------------------------------------------------------------
-
-            string url2 = "https://www.familytreedna.com/api/family-finder/matches-common";
-            var jsonCommonMatchesRaw = client.DownloadString(url2);
-
-            JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
-            serializerCommonMatches.MaxJsonLength = int.MaxValue;
-            CommonMatch[] CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
-
-            for (int i = 0; i < Matches.Length; i++)
-            {
-                for (int j = 0; j < CommonMatches.Length; j++)
+                try
                 {
-                    if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
+                    WebClient client = new WebClient();
+                    string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(KitNumber + ":" + PassWord));
+                    client.Headers[HttpRequestHeader.Authorization] = "Basic " + credentials;
+
+                    string url = "https://www.familytreedna.com/api/family-finder/matches";
+                    var jsonMatchesRaw = client.DownloadString(url);
+
+                    JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
+                    serializerMatches.MaxJsonLength = int.MaxValue;
+                    Match[] Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
+
+                    matrixOfDistances = null;
+                    kitNames = null;
+
+                    matrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
+                    kitNames = new string[Matches.Length + 1];
+                    kitNumbers = new string[Matches.Length + 1];
+
+                    replaceZeros();
+                    fillDiagonalByZeros();
+
+                    for (int i = 1; i < matrixOfDistances.GetLength(0); i++)
                     {
-                        for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
+                        matrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                        matrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                        kitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
+                        kitNumbers[i] = Matches[i - 1].eKitNum;
+                    }
+
+                    //--------------------------------------------------------------------------------------------------
+
+                    string url2 = "https://www.familytreedna.com/api/family-finder/matches-common";
+                    var jsonCommonMatchesRaw = client.DownloadString(url2);
+
+                    JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
+                    serializerCommonMatches.MaxJsonLength = int.MaxValue;
+                    CommonMatch[] CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
+
+                    for (int i = 0; i < Matches.Length; i++)
+                    {
+                        for (int j = 0; j < CommonMatches.Length; j++)
                         {
-                            for (int m = 0; m < Matches.Length; m++)
+                            if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
                             {
-                                if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
+                                for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
                                 {
-                                    matrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
+                                    for (int m = 0; m < Matches.Length; m++)
+                                    {
+                                        if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
+                                        {
+                                            matrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }
 
-            if (jsonMatchesRaw != null & jsonCommonMatchesRaw != null)
-            {
-                result = MessageBox.Show(DataReceivedMessage, DataReceivedCaption, MessageBoxButtons.OK);
+                    if (jsonMatchesRaw != null & jsonCommonMatchesRaw != null)
+                    {
+                        DataReceivedResult = MessageBox.Show(DataReceivedMessage, DataReceivedCaption, MessageBoxButtons.OK);
+                    }
+                }
+                catch (WebException ex)
+                {
+                    LoginErrorResult = MessageBox.Show(LoginErrorMessage, LoginErrorCaption, MessageBoxButtons.OK);
+                }
             }
         }
     }
