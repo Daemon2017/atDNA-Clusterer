@@ -67,6 +67,9 @@ namespace atDNACluster
             zedGraph.Location = new Point(0, 24);
             zedGraph.Name = "zedGraph";
             zedGraph.Size = new Size(1366, 768 - 24 - 54);
+            zedGraph.GraphPane.XAxis.IsVisible = false;
+            zedGraph.GraphPane.YAxis.IsVisible = false;
+            zedGraph.GraphPane.Title.IsVisible = false;
             zedGraph.PointValueEvent += new ZedGraphControl.PointValueHandler(zedGraph_PointValueEvent);
             Controls.Add(zedGraph);
         }
@@ -209,19 +212,21 @@ namespace atDNACluster
 
                 matrixOfDistances = new double[allLinesDistances.Length - 1, allLinesDistances.Length - 1];
 
+                replaceZeros();
+                fillDiagonalByZeros();
+
                 for (int i = 1; i < allLinesDistances.Length; i++)
                 {
                     string[] rowDistances = allLinesDistances[i].Split(new[] { ';' });
 
                     for (int j = 2; j < allLinesDistances.Length + 1; j++)
                     {
-                        if (double.TryParse(rowDistances[j], out matrixOfDistances[i - 1, j - 2])) { }
+                        if (double.TryParse(rowDistances[j], out matrixOfDistances[i - 1, j - 2]))
+                        {
+
+                        }
                     }
                 }
-
-                replaceZeros();
-
-                fillDiagonalByZeros();
 
                 string[] allLinesKits = File.ReadAllLines(openFileDialog.FileName);
 
