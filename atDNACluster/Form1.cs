@@ -493,6 +493,9 @@ namespace atDNACluster
             NumberOfPCAClustersErrorMessage = "First, you need to run PCA when the number of clusters is equal to 4!";
             NumberOfPCAClustersErrorCaption = "Wrong number of clusters!";
 
+            ServerOfflineMessage = "FTDNA's data-server is temporarily unavailable!";
+            ServerOfflineCaption = "Error!";
+
             NumberOfClusteringClustersErrorMessage = "First, you need to run K-means clustering when the number of clusters is equal to 4!";
             NumberOfClusteringClustersErrorCaption = "Wrong number of clusters!";
 
