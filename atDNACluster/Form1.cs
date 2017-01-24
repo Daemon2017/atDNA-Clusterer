@@ -33,6 +33,10 @@ namespace atDNACluster
         string LoginErrorCaption = "Ошибка!";
         DialogResult LoginErrorResult;
 
+        string ServerOfflineMessage = "Сервер с данными FTDNA временно недоступен!";
+        string ServerOfflineCaption = "Ошибка!";
+        DialogResult ServerOfflineResult;
+
         string PCAMmessage = "Сперва Вы должны провести обработку с помощью МГК!";
         string PCACaption = "Нехватка данных!";
 
@@ -66,7 +70,7 @@ namespace atDNACluster
             zedGraph = new ZedGraphControl();
             zedGraph.Location = new Point(0, 24);
             zedGraph.Name = "zedGraph";
-            zedGraph.Size = new Size(1366, 768 - 24 - 54);
+            zedGraph.Size = new Size(1366, 768 - 24 - 54 - 22);
             zedGraph.GraphPane.XAxis.IsVisible = false;
             zedGraph.GraphPane.YAxis.IsVisible = false;
             zedGraph.GraphPane.Title.IsVisible = false;
@@ -497,27 +501,19 @@ namespace atDNACluster
 
             fileToolStripMenuItem.Text = "File";
             openToolStripMenuItem.Text = "Open";
-            clustersToolStripMenuItem.Text = "Clusters";
-            clustersNumberToolStripMenuItem.Text = "Number of clusters";
-            processingToolStripMenuItem.Text = "Processing (PCA)";
+            numberOfClustersToolStripMenuItem.Text = "Number of clusters";
+            processingToolStripMenuItem.Text = "Processing";
             outputTypeToolStripMenuItem.Text = "Output type";
             standartizeToolStripMenuItem.Text = "Standartize";
             centerToolStripMenuItem.Text = "Center";
-            processToolStripMenuItem.Text = "Process";
-            clusterizationToolStripMenuItem.Text = "Clusterization (K-means)";
-            processToolStripMenuItem1.Text = "Process";
+            processToolStripMenuItem.Text = "Process (PCA)";
+            clusterizationToolStripMenuItem.Text = "Clusterization";
+            processToolStripMenuItem1.Text = "Process (K-means)";
             colorHighlightningToolStripMenuItem.Text = "Color highlighting";
             redToolStripMenuItem.Text = "1 - Red";
             greenToolStripMenuItem.Text = "2 - Green";
             blackToolStripMenuItem.Text = "3 - Black";
             processToolStripMenuItem2.Text = "Process";
-        }
-
-        private void clustersNumberToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator();
-            ClustersRegulatorWindow.ShowDialog();
-            numberOfClusters = ClustersRegulatorWindow.numberOfClusters;
         }
 
         double convertTotalCMToTMRCA(double TotalCM)
@@ -738,7 +734,18 @@ namespace atDNACluster
                 {
                     LoginErrorResult = MessageBox.Show(LoginErrorMessage, LoginErrorCaption, MessageBoxButtons.OK);
                 }
+                catch (ArgumentException ex)
+                {
+                    ServerOfflineResult = MessageBox.Show(ServerOfflineMessage, ServerOfflineCaption, MessageBoxButtons.OK);
+                }
             }
+        }
+
+        private void numberOfClustersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(numberOfClusters);
+            ClustersRegulatorWindow.ShowDialog();
+            numberOfClusters = ClustersRegulatorWindow.numberOfClusters;
         }
     }
 }

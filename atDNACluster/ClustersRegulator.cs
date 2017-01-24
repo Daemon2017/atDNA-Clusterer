@@ -5,9 +5,11 @@ namespace atDNACluster
 {
     public partial class ClustersRegulator : Form
     {
-        public ClustersRegulator()
+        public ClustersRegulator(int number)
         {
             InitializeComponent();
+
+            numericUpDown1.Value = number;
         }
 
         public int numberOfClusters = 2;

@@ -32,14 +32,13 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьFTDNAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clustersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clustersNumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outputTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.centerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.standartizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clusterizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.numberOfClustersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.colorHighlightningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,14 +46,16 @@
             this.blackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.eNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.clustersToolStripMenuItem,
             this.processingToolStripMenuItem,
             this.clusterizationToolStripMenuItem,
             this.colorHighlightningToolStripMenuItem,
@@ -88,29 +89,14 @@
             this.открытьFTDNAToolStripMenuItem.Text = "Открыть (FTDNA)";
             this.открытьFTDNAToolStripMenuItem.Click += new System.EventHandler(this.openFTDNAToolStripMenuItem_Click);
             // 
-            // clustersToolStripMenuItem
-            // 
-            this.clustersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clustersNumberToolStripMenuItem});
-            this.clustersToolStripMenuItem.Name = "clustersToolStripMenuItem";
-            this.clustersToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
-            this.clustersToolStripMenuItem.Text = "Кластеры";
-            // 
-            // clustersNumberToolStripMenuItem
-            // 
-            this.clustersNumberToolStripMenuItem.Name = "clustersNumberToolStripMenuItem";
-            this.clustersNumberToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.clustersNumberToolStripMenuItem.Text = "Количество кластеров";
-            this.clustersNumberToolStripMenuItem.Click += new System.EventHandler(this.clustersNumberToolStripMenuItem_Click);
-            // 
             // processingToolStripMenuItem
             // 
             this.processingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.outputTypeToolStripMenuItem,
             this.processToolStripMenuItem});
             this.processingToolStripMenuItem.Name = "processingToolStripMenuItem";
-            this.processingToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
-            this.processingToolStripMenuItem.Text = "Обработка (МГК)";
+            this.processingToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.processingToolStripMenuItem.Text = "Обработка";
             // 
             // outputTypeToolStripMenuItem
             // 
@@ -118,7 +104,7 @@
             this.centerToolStripMenuItem,
             this.standartizeToolStripMenuItem});
             this.outputTypeToolStripMenuItem.Name = "outputTypeToolStripMenuItem";
-            this.outputTypeToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.outputTypeToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.outputTypeToolStripMenuItem.Text = "Тип вывода";
             // 
             // centerToolStripMenuItem
@@ -142,23 +128,31 @@
             // processToolStripMenuItem
             // 
             this.processToolStripMenuItem.Name = "processToolStripMenuItem";
-            this.processToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.processToolStripMenuItem.Text = "Обработать";
+            this.processToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.processToolStripMenuItem.Text = "Обработать (МГК)";
             this.processToolStripMenuItem.Click += new System.EventHandler(this.processToolStripMenuItem_Click);
             // 
             // clusterizationToolStripMenuItem
             // 
             this.clusterizationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.numberOfClustersToolStripMenuItem,
             this.processToolStripMenuItem1});
             this.clusterizationToolStripMenuItem.Name = "clusterizationToolStripMenuItem";
-            this.clusterizationToolStripMenuItem.Size = new System.Drawing.Size(168, 20);
-            this.clusterizationToolStripMenuItem.Text = "Кластеризация (К-средних)";
+            this.clusterizationToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
+            this.clusterizationToolStripMenuItem.Text = "Кластеризация";
+            // 
+            // numberOfClustersToolStripMenuItem
+            // 
+            this.numberOfClustersToolStripMenuItem.Name = "numberOfClustersToolStripMenuItem";
+            this.numberOfClustersToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.numberOfClustersToolStripMenuItem.Text = "Количество кластеров";
+            this.numberOfClustersToolStripMenuItem.Click += new System.EventHandler(this.numberOfClustersToolStripMenuItem_Click);
             // 
             // processToolStripMenuItem1
             // 
             this.processToolStripMenuItem1.Name = "processToolStripMenuItem1";
-            this.processToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
-            this.processToolStripMenuItem1.Text = "Обработать";
+            this.processToolStripMenuItem1.Size = new System.Drawing.Size(206, 22);
+            this.processToolStripMenuItem1.Text = "Обработать (К-средних)";
             this.processToolStripMenuItem1.Click += new System.EventHandler(this.processToolStripMenuItem1_Click);
             // 
             // colorHighlightningToolStripMenuItem
@@ -207,18 +201,36 @@
             this.eNGToolStripMenuItem.Text = "ENG";
             this.eNGToolStripMenuItem.Click += new System.EventHandler(this.eNGToolStripMenuItem_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 639);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1264, 22);
+            this.statusStrip1.TabIndex = 7;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 661);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "atDNA Clusterer v0.1.1";
+            this.Text = "atDNA Clusterer v0.1.2";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -228,8 +240,6 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clustersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clustersNumberToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem processingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem outputTypeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem centerToolStripMenuItem;
@@ -244,6 +254,9 @@
         private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem eNGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem открытьFTDNAToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem numberOfClustersToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }
 
