@@ -203,55 +203,7 @@ namespace atDNACluster
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MatrixOfDistances = null;
-            KitNumbers = null;
-            KitNames = null;
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string[] allLinesDistances = File.ReadAllLines(openFileDialog.FileName);
-
-                MatrixOfDistances = new double[allLinesDistances.Length - 1, allLinesDistances.Length - 1];
-
-                replaceZeros();
-                fillDiagonalByZeros();
-
-                for (int i = 1; i < allLinesDistances.Length; i++)
-                {
-                    string[] rowDistances = allLinesDistances[i].Split(new[] { ';' });
-
-                    for (int j = 2; j < allLinesDistances.Length + 1; j++)
-                    {
-                        if (double.TryParse(rowDistances[j], out MatrixOfDistances[i - 1, j - 2]))
-                        {
-
-                        }
-                    }
-                }
-
-                string[] allLinesKits = File.ReadAllLines(openFileDialog.FileName);
-
-                KitNumbers = new string[allLinesKits.Length - 1];
-                KitNames = new string[allLinesKits.Length - 1];
-
-                for (int i = 1; i < allLinesKits.Length; i++)
-                {
-                    string[] rowKits = allLinesKits[i].Split(new[] { ';' });
-
-                    for (int j = 0; j < 0 + 1; j++)
-                    {
-                        KitNumbers[i - 1] = rowKits[j];
-                    }
-
-                    for (int j = 1; j < 1 + 1; j++)
-                    {
-                        KitNames[i - 1] = rowKits[j];
-                    }
-                }
-            }
         }
 
         private void processToolStripMenuItem_Click(object sender, EventArgs e)
@@ -503,7 +455,7 @@ namespace atDNACluster
             PCACaption = "Not enough data!";
 
             fileToolStripMenuItem.Text = "File";
-            openToolStripMenuItem.Text = "Open";
+            openToolStripMenuItem1.Text = "Load";
             numberOfClustersToolStripMenuItem.Text = "Number of clusters";
             processingToolStripMenuItem.Text = "Processing";
             outputTypeToolStripMenuItem.Text = "Output type";
@@ -592,6 +544,93 @@ namespace atDNACluster
         }
 
         private void openFTDNAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numberOfClustersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(numberOfClusters);
+            ClustersRegulatorWindow.ShowDialog();
+            numberOfClusters = ClustersRegulatorWindow.numberOfClusters;
+        }
+
+        private void saveKitsOfMatchesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog SaveKitNumbersDialog = new SaveFileDialog();
+            SaveKitNumbersDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            SaveKitNumbersDialog.FilterIndex = 2;
+            SaveKitNumbersDialog.RestoreDirectory = true;
+
+            if (SaveKitNumbersDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (SaveKitNumbersDialog.OpenFile() != null)
+                {
+                    StreamWriter str = new StreamWriter(SaveKitNumbersDialog.FileName);
+
+                    for (int i = 0; i < KitNumbers.GetLength(0); i++)
+                    {
+                        str.WriteLine(KitNumbers[i]);
+                    }
+                    str.Close();
+                }
+            }
+        }
+
+        private void openGedmatchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MatrixOfDistances = null;
+            KitNumbers = null;
+            KitNames = null;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string[] allLinesDistances = File.ReadAllLines(openFileDialog.FileName);
+
+                MatrixOfDistances = new double[allLinesDistances.Length - 1, allLinesDistances.Length - 1];
+
+                replaceZeros();
+                fillDiagonalByZeros();
+
+                for (int i = 1; i < allLinesDistances.Length; i++)
+                {
+                    string[] rowDistances = allLinesDistances[i].Split(new[] { ';' });
+
+                    for (int j = 2; j < allLinesDistances.Length + 1; j++)
+                    {
+                        if (double.TryParse(rowDistances[j], out MatrixOfDistances[i - 1, j - 2]))
+                        {
+
+                        }
+                    }
+                }
+
+                string[] allLinesKits = File.ReadAllLines(openFileDialog.FileName);
+
+                KitNumbers = new string[allLinesKits.Length - 1];
+                KitNames = new string[allLinesKits.Length - 1];
+
+                for (int i = 1; i < allLinesKits.Length; i++)
+                {
+                    string[] rowKits = allLinesKits[i].Split(new[] { ';' });
+
+                    for (int j = 0; j < 0 + 1; j++)
+                    {
+                        KitNumbers[i - 1] = rowKits[j];
+                    }
+
+                    for (int j = 1; j < 1 + 1; j++)
+                    {
+                        KitNames[i - 1] = rowKits[j];
+                    }
+                }
+            }
+        }
+
+        private void openFTDNAToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             String KitNumber;
             String PassWord;
@@ -742,13 +781,6 @@ namespace atDNACluster
                     ServerOfflineResult = MessageBox.Show(ServerOfflineMessage, ServerOfflineCaption, MessageBoxButtons.OK);
                 }
             }
-        }
-
-        private void numberOfClustersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(numberOfClusters);
-            ClustersRegulatorWindow.ShowDialog();
-            numberOfClusters = ClustersRegulatorWindow.numberOfClusters;
         }
     }
 }
