@@ -30,6 +30,11 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.openGedmatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFTDNAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveKitsOfMatchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outputTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.centerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,11 +51,6 @@
             this.eNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveKitsOfMatchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.openGedmatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFTDNAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -77,6 +77,44 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.fileToolStripMenuItem.Text = "Файл";
+            // 
+            // openToolStripMenuItem1
+            // 
+            this.openToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openGedmatchToolStripMenuItem,
+            this.openFTDNAToolStripMenuItem});
+            this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem1.Text = "Загрузить";
+            // 
+            // openGedmatchToolStripMenuItem
+            // 
+            this.openGedmatchToolStripMenuItem.Name = "openGedmatchToolStripMenuItem";
+            this.openGedmatchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openGedmatchToolStripMenuItem.Text = "GedMatch";
+            this.openGedmatchToolStripMenuItem.Click += new System.EventHandler(this.openGedmatchToolStripMenuItem_Click);
+            // 
+            // openFTDNAToolStripMenuItem
+            // 
+            this.openFTDNAToolStripMenuItem.Name = "openFTDNAToolStripMenuItem";
+            this.openFTDNAToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openFTDNAToolStripMenuItem.Text = "FTDNA";
+            this.openFTDNAToolStripMenuItem.Click += new System.EventHandler(this.openFTDNAToolStripMenuItem_Click_1);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveKitsOfMatchesToolStripMenuItem});
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Text = "Сохранить";
+            // 
+            // saveKitsOfMatchesToolStripMenuItem
+            // 
+            this.saveKitsOfMatchesToolStripMenuItem.Name = "saveKitsOfMatchesToolStripMenuItem";
+            this.saveKitsOfMatchesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.saveKitsOfMatchesToolStripMenuItem.Text = "Номера совпаденцев";
+            this.saveKitsOfMatchesToolStripMenuItem.Click += new System.EventHandler(this.saveKitsOfMatchesToolStripMenuItem_Click);
             // 
             // processingToolStripMenuItem
             // 
@@ -205,44 +243,6 @@
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveKitsOfMatchesToolStripMenuItem});
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveToolStripMenuItem.Text = "Сохранить";
-            // 
-            // saveKitsOfMatchesToolStripMenuItem
-            // 
-            this.saveKitsOfMatchesToolStripMenuItem.Name = "saveKitsOfMatchesToolStripMenuItem";
-            this.saveKitsOfMatchesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.saveKitsOfMatchesToolStripMenuItem.Text = "Номера совпаденцев";
-            this.saveKitsOfMatchesToolStripMenuItem.Click += new System.EventHandler(this.saveKitsOfMatchesToolStripMenuItem_Click);
-            // 
-            // openToolStripMenuItem1
-            // 
-            this.openToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openGedmatchToolStripMenuItem,
-            this.openFTDNAToolStripMenuItem});
-            this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
-            this.openToolStripMenuItem1.Size = new System.Drawing.Size(170, 22);
-            this.openToolStripMenuItem1.Text = "Загрузить";
-            // 
-            // openGedmatchToolStripMenuItem
-            // 
-            this.openGedmatchToolStripMenuItem.Name = "openGedmatchToolStripMenuItem";
-            this.openGedmatchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openGedmatchToolStripMenuItem.Text = "GedMatch";
-            this.openGedmatchToolStripMenuItem.Click += new System.EventHandler(this.openGedmatchToolStripMenuItem_Click);
-            // 
-            // openFTDNAToolStripMenuItem
-            // 
-            this.openFTDNAToolStripMenuItem.Name = "openFTDNAToolStripMenuItem";
-            this.openFTDNAToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openFTDNAToolStripMenuItem.Text = "FTDNA";
-            this.openFTDNAToolStripMenuItem.Click += new System.EventHandler(this.openFTDNAToolStripMenuItem_Click_1);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -252,7 +252,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "atDNA Clusterer v0.1.4";
+            this.Text = "atDNA Clusterer v0.1.5";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

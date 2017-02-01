@@ -201,11 +201,6 @@ namespace atDNACluster
 
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void processToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if ((MatrixOfDistances != null) && (KitNumbers != null))
@@ -543,11 +538,6 @@ namespace atDNACluster
             return result;
         }
 
-        private void openFTDNAToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void numberOfClustersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(numberOfClusters);
@@ -559,12 +549,12 @@ namespace atDNACluster
         {
             SaveFileDialog SaveKitNumbersDialog = new SaveFileDialog();
             SaveKitNumbersDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
-            SaveKitNumbersDialog.FilterIndex = 2;
+            SaveKitNumbersDialog.FilterIndex = 1;
             SaveKitNumbersDialog.RestoreDirectory = true;
 
             if (SaveKitNumbersDialog.ShowDialog() == DialogResult.OK)
             {
-                if (SaveKitNumbersDialog.OpenFile() != null)
+                if (SaveKitNumbersDialog.FileName != null)
                 {
                     StreamWriter str = new StreamWriter(SaveKitNumbersDialog.FileName);
 
@@ -632,8 +622,8 @@ namespace atDNACluster
 
         private void openFTDNAToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            String KitNumber;
-            String PassWord;
+            string KitNumber;
+            string PassWord;
 
             Authorization AuthorizationWindow = new Authorization();
             AuthorizationWindow.ShowDialog();
