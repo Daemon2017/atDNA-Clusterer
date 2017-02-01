@@ -24,6 +24,8 @@ namespace atDNACluster
         PrincipalComponentAnalysis pca;
         DescriptiveAnalysis sda;
         AnalysisMethod AnalysisPCA;
+        CommonMatch[] CommonMatches;
+        Match[] Matches;
 
         string DataReceivedMessage = "Данные успешно получены с сервера!";
         string DataReceivedCaption = "Успех!";
@@ -203,6 +205,109 @@ namespace atDNACluster
 
         private void processToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MatrixOfDistances = null;
+            KitNames = null;
+            KitNumbers = null;
+
+            MatrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
+            KitNames = new string[Matches.Length + 1];
+            KitNumbers = new string[Matches.Length + 1];
+
+            replaceZeros();
+            fillDiagonalByZeros();
+
+            //-----------------------------------------------------
+
+            for (int i = 1; i < MatrixOfDistances.GetLength(0); i++)
+            {
+                MatrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                MatrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                KitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
+                KitNumbers[i] = Matches[i - 1].eKitNum;
+            }
+
+            for (int i = 0; i < Matches.Length; i++)
+            {
+                for (int j = 0; j < CommonMatches.Length; j++)
+                {
+                    if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
+                    {
+                        for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
+                        {
+                            for (int m = 0; m < Matches.Length; m++)
+                            {
+                                if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
+                                {
+                                    MatrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //-----------------------------------------------------
+
+            int[] counter = new int[MatrixOfDistances.GetLength(0)];
+            int[] orphan = new int[1];
+            int d = 0;
+
+            for (int i = 0; i < MatrixOfDistances.GetLength(0); i++)
+            {
+                for (int j = 0; j < MatrixOfDistances.GetLength(0); j++)
+                {
+                    if (MatrixOfDistances[i, j] == 99)
+                    {
+                        counter[i]++;
+                    }
+                }
+
+                if (counter[i] == MatrixOfDistances.GetLength(0) - 2)
+                {
+                    orphan[d] = i;
+
+                    d++;
+
+                    Array.Resize(ref orphan, orphan.Length + 1);
+                }
+            }
+
+            counter = null;
+
+            Array.Resize(ref orphan, orphan.Length - 1);
+
+            //-----------------------------------------------------
+
+            int deleted = 0;
+            string[] TempKitNamesMatrix = KitNames;
+            string[] TempKitNumbersMatrix = KitNumbers;
+            double[,] TempDistancesMatrix = MatrixOfDistances;
+
+            for (int i = 0; i < orphan.Length; i++)
+            {
+                TempKitNamesMatrix = CutArrayString(orphan[i] - deleted, TempKitNamesMatrix);
+                TempKitNumbersMatrix = CutArrayString(orphan[i] - deleted, TempKitNumbersMatrix);
+                TempDistancesMatrix = CutArrayDouble(orphan[i] - deleted, orphan[i] - deleted, TempDistancesMatrix);
+
+                deleted++;
+            }
+
+            orphan = null;
+
+            KitNames = null;
+            KitNames = TempKitNamesMatrix;
+            TempKitNamesMatrix = null;
+
+            KitNumbers = null;
+            KitNumbers = TempKitNumbersMatrix;
+            TempKitNumbersMatrix = null;
+
+            MatrixOfDistances = null;
+            MatrixOfDistances = TempDistancesMatrix;
+            TempDistancesMatrix = null;
+
+            //-----------------------------------------------------
+
             if ((MatrixOfDistances != null) && (KitNumbers != null))
             {
                 sda = null;
@@ -216,8 +321,7 @@ namespace atDNACluster
                 {
                     AnalysisPCA = AnalysisMethod.Center;
                 }
-
-                if (standartizeToolStripMenuItem.CheckState == CheckState.Checked)
+                else if (standartizeToolStripMenuItem.CheckState == CheckState.Checked)
                 {
                     AnalysisPCA = AnalysisMethod.Standardize;
                 }
@@ -264,7 +368,7 @@ namespace atDNACluster
             }
         }
 
-        private void redToolStripMenuItem_Click(object sender, EventArgs e)
+        void paintDots(int ColorNumber)
         {
             if (numberOfClusters != 4)
             {
@@ -301,7 +405,18 @@ namespace atDNACluster
                                 {
                                     if (KitNumbers[j] == kitsForPaint[i])
                                     {
-                                        classificationsOur[j - 1] = 1;
+                                        if (ColorNumber == 1)
+                                        {
+                                            classificationsOur[j - 1] = 1;
+                                        }
+                                        else if (ColorNumber == 2)
+                                        {
+                                            classificationsOur[j - 1] = 2;
+                                        }
+                                        else if (ColorNumber == 3)
+                                        {
+                                            classificationsOur[j - 1] = 3;
+                                        }
                                     }
                                 }
                             }
@@ -309,96 +424,21 @@ namespace atDNACluster
                     }
                 }
             }
+        }
+
+        private void redToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            paintDots(1);
         }
 
         private void greenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (numberOfClusters != 4)
-            {
-                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, MessageBoxButtons.OK);
-            }
-            else
-            {
-                if (LastPCANumberOfClusters != 4)
-                {
-                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, MessageBoxButtons.OK);
-                }
-                else
-                {
-                    if (LastClusteringNumberOfClusters != 4)
-                    {
-                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, MessageBoxButtons.OK);
-                    }
-                    else
-                    {
-                        string[] kitsForPaint;
-
-                        OpenFileDialog openFileDialog = new OpenFileDialog();
-                        openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-                        if (openFileDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                            for (int i = 0; i < kitsForPaint.Length; i++)
-                            {
-                                for (int j = 1; j < KitNumbers.Length; j++)
-                                {
-                                    if (KitNumbers[j] == kitsForPaint[i])
-                                    {
-                                        classificationsOur[j - 1] = 2;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            paintDots(2);
         }
 
         private void blackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (numberOfClusters != 4)
-            {
-                NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, MessageBoxButtons.OK);
-            }
-            else
-            {
-                if (LastPCANumberOfClusters != 4)
-                {
-                    NumberOfPCAClustersError = MessageBox.Show(NumberOfPCAClustersErrorMessage, NumberOfPCAClustersErrorCaption, MessageBoxButtons.OK);
-                }
-                else
-                {
-                    if (LastClusteringNumberOfClusters != 4)
-                    {
-                        NumberOfClusteringClustersError = MessageBox.Show(NumberOfClusteringClustersErrorMessage, NumberOfClusteringClustersErrorCaption, MessageBoxButtons.OK);
-                    }
-                    else
-                    {
-                        string[] kitsForPaint;
-
-                        OpenFileDialog openFileDialog = new OpenFileDialog();
-                        openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-                        if (openFileDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
-
-                            for (int i = 0; i < kitsForPaint.Length; i++)
-                            {
-                                for (int j = 1; j < KitNumbers.Length; j++)
-                                {
-                                    if (KitNumbers[j] == kitsForPaint[i])
-                                    {
-                                        classificationsOur[j - 1] = 3;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            paintDots(3);
         }
 
         private void processToolStripMenuItem2_Click(object sender, EventArgs e)
@@ -638,129 +678,22 @@ namespace atDNACluster
                     string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(KitNumber + ":" + PassWord));
                     client.Headers[HttpRequestHeader.Authorization] = "Basic " + credentials;
 
+                    Matches = null;
+                    CommonMatches = null;
+
                     string url2 = "https://www.familytreedna.com/api/family-finder/matches-common";
                     var jsonCommonMatchesRaw = client.DownloadString(url2);
                     JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
                     serializerCommonMatches.MaxJsonLength = int.MaxValue;
-                    CommonMatch[] CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
+                    CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
                     jsonCommonMatchesRaw = null;
 
                     string url = "https://www.familytreedna.com/api/family-finder/matches";
                     var jsonMatchesRaw = client.DownloadString(url);
                     JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
                     serializerMatches.MaxJsonLength = int.MaxValue;
-                    Match[] Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
+                    Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
                     jsonMatchesRaw = null;
-
-                    MatrixOfDistances = null;
-                    KitNames = null;
-
-                    MatrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
-                    KitNames = new string[Matches.Length + 1];
-                    KitNumbers = new string[Matches.Length + 1];
-
-                    replaceZeros();
-                    fillDiagonalByZeros();
-
-                    //-----------------------------------------------------
-
-                    for (int i = 1; i < MatrixOfDistances.GetLength(0); i++)
-                    {
-                        MatrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                        MatrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                        KitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
-                        KitNumbers[i] = Matches[i - 1].eKitNum;
-                    }
-
-                    for (int i = 0; i < Matches.Length; i++)
-                    {
-                        for (int j = 0; j < CommonMatches.Length; j++)
-                        {
-                            if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
-                            {
-                                for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
-                                {
-                                    for (int m = 0; m < Matches.Length; m++)
-                                    {
-                                        if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
-                                        {
-                                            MatrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    Matches = null;
-                    CommonMatches = null;
-
-                    //-----------------------------------------------------
-
-                    int[] counter = new int[MatrixOfDistances.GetLength(0)];
-                    int[] orphan = new int[1];
-                    int d = 0;
-
-                    for (int i = 0; i < MatrixOfDistances.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < MatrixOfDistances.GetLength(0); j++)
-                        {
-                            if (MatrixOfDistances[i, j] == 99)
-                            {
-                                counter[i]++;
-                            }
-                        }
-
-                        if (counter[i] == MatrixOfDistances.GetLength(0) - 2)
-                        {
-                            orphan[d] = i;
-
-                            d++;
-
-                            Array.Resize(ref orphan, orphan.Length + 1);
-                        }
-                    }
-
-                    counter = null;
-
-                    Array.Resize(ref orphan, orphan.Length - 1);
-
-                    //-----------------------------------------------------
-
-                    int deleted = 0;
-                    string[] TempKitNamesMatrix = KitNames;
-                    string[] TempKitNumbersMatrix = KitNumbers;
-                    double[,] TempDistancesMatrix = MatrixOfDistances;
-
-                    for (int i = 0; i < orphan.Length; i++)
-                    {
-                        TempKitNamesMatrix = CutArrayString(orphan[i] - deleted, TempKitNamesMatrix);
-                        TempKitNumbersMatrix = CutArrayString(orphan[i] - deleted, TempKitNumbersMatrix);
-                        TempDistancesMatrix = CutArrayDouble(orphan[i] - deleted, orphan[i] - deleted, TempDistancesMatrix);
-
-                        deleted++;
-                    }
-
-                    orphan = null;
-
-                    KitNames = null;
-                    KitNames = TempKitNamesMatrix;
-                    TempKitNamesMatrix = null;
-
-                    KitNumbers = null;
-                    KitNumbers = TempKitNumbersMatrix;
-                    TempKitNumbersMatrix = null;
-
-                    MatrixOfDistances = null;
-                    MatrixOfDistances = TempDistancesMatrix;
-                    TempDistancesMatrix = null;
-
-                    //-----------------------------------------------------
-
-                    if (MatrixOfDistances != null)
-                    {
-                        DataReceivedResult = MessageBox.Show(DataReceivedMessage, DataReceivedCaption, MessageBoxButtons.OK);
-                    }
                 }
                 catch (WebException ex)
                 {
@@ -771,6 +704,26 @@ namespace atDNACluster
                     ServerOfflineResult = MessageBox.Show(ServerOfflineMessage, ServerOfflineCaption, MessageBoxButtons.OK);
                 }
             }
+        }
+
+        private void SumOfSegmentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (LongestSegmentToolStripMenuItem.CheckState == CheckState.Checked)
+            {
+                LongestSegmentToolStripMenuItem.CheckState = CheckState.Unchecked;
+            }
+
+            SumOfSegmentsToolStripMenuItem.CheckState = CheckState.Checked;
+        }
+
+        private void LongestSegmentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (SumOfSegmentsToolStripMenuItem.CheckState == CheckState.Checked)
+            {
+                SumOfSegmentsToolStripMenuItem.CheckState = CheckState.Unchecked;
+            }
+
+            LongestSegmentToolStripMenuItem.CheckState = CheckState.Checked;
         }
     }
 }
