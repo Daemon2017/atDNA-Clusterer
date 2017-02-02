@@ -54,6 +54,7 @@
             this.eNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -227,28 +228,28 @@
             // redToolStripMenuItem
             // 
             this.redToolStripMenuItem.Name = "redToolStripMenuItem";
-            this.redToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.redToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.redToolStripMenuItem.Text = "1 - Красный";
             this.redToolStripMenuItem.Click += new System.EventHandler(this.redToolStripMenuItem_Click);
             // 
             // greenToolStripMenuItem
             // 
             this.greenToolStripMenuItem.Name = "greenToolStripMenuItem";
-            this.greenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.greenToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.greenToolStripMenuItem.Text = "2 - Зеленый";
             this.greenToolStripMenuItem.Click += new System.EventHandler(this.greenToolStripMenuItem_Click);
             // 
             // blackToolStripMenuItem
             // 
             this.blackToolStripMenuItem.Name = "blackToolStripMenuItem";
-            this.blackToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.blackToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.blackToolStripMenuItem.Text = "3 - Черный";
             this.blackToolStripMenuItem.Click += new System.EventHandler(this.blackToolStripMenuItem_Click);
             // 
             // processToolStripMenuItem2
             // 
             this.processToolStripMenuItem2.Name = "processToolStripMenuItem2";
-            this.processToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.processToolStripMenuItem2.Size = new System.Drawing.Size(140, 22);
             this.processToolStripMenuItem2.Text = "Обработать";
             this.processToolStripMenuItem2.Click += new System.EventHandler(this.processToolStripMenuItem2_Click);
             // 
@@ -262,7 +263,8 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripProgressBar1});
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 639);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1264, 22);
@@ -274,6 +276,12 @@
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(127, 17);
+            this.toolStripStatusLabel1.Text = "Число совпаденцев: 0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,7 +291,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "atDNA Clusterer v0.1.6";
+            this.Text = "atDNA Clusterer v0.1.7";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -321,6 +329,7 @@
         private System.Windows.Forms.ToolStripMenuItem типОбработкиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SumOfSegmentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LongestSegmentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

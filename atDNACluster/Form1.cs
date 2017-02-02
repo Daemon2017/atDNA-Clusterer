@@ -306,6 +306,11 @@ namespace atDNACluster
             MatrixOfDistances = TempDistancesMatrix;
             TempDistancesMatrix = null;
 
+            classificationsOur = null;
+            classificationsOur = new int[KitNumbers.Length];
+
+            toolStripStatusLabel1.Text = "Число совпаденцев: " + KitNumbers.Length;
+
             //-----------------------------------------------------
 
             if ((MatrixOfDistances != null) && (KitNumbers != null))
@@ -388,8 +393,6 @@ namespace atDNACluster
                     }
                     else
                     {
-                        classificationsOur = new int[KitNumbers.Length];
-
                         string[] kitsForPaint;
 
                         OpenFileDialog openFileDialog = new OpenFileDialog();
