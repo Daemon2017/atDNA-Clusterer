@@ -39,6 +39,10 @@ namespace atDNACluster
         string ServerOfflineCaption = "Ошибка!";
         DialogResult ServerOfflineResult;
 
+        string ServerDeadMessage = "Один из серверов API не работает!";
+        string ServerDeadCaption = "Ошибка!";
+        DialogResult ServerDeadResult;
+
         string PCAMmessage = "Сперва Вы должны провести обработку с помощью МГК!";
         string PCACaption = "Нехватка данных!";
 
@@ -249,70 +253,71 @@ namespace atDNACluster
                         }
                     }
                 }
-
-                //-----------------------------------------------------
-
-                int[] counter = new int[MatrixOfDistances.GetLength(0)];
-                int[] orphan = new int[1];
-                int d = 0;
-
-                for (int i = 0; i < MatrixOfDistances.GetLength(0); i++)
-                {
-                    for (int j = 0; j < MatrixOfDistances.GetLength(0); j++)
-                    {
-                        if (MatrixOfDistances[i, j] == 99)
-                        {
-                            counter[i]++;
-                        }
-                    }
-
-                    if (counter[i] == MatrixOfDistances.GetLength(0) - 2)
-                    {
-                        orphan[d] = i;
-
-                        d++;
-
-                        Array.Resize(ref orphan, orphan.Length + 1);
-                    }
-                }
-
-                counter = null;
-
-                Array.Resize(ref orphan, orphan.Length - 1);
-
-                //-----------------------------------------------------
-
-                int deleted = 0;
-                string[] TempKitNamesMatrix = KitNames;
-                string[] TempKitNumbersMatrix = KitNumbers;
-                double[,] TempDistancesMatrix = MatrixOfDistances;
-
-                for (int i = 0; i < orphan.Length; i++)
-                {
-                    TempKitNamesMatrix = CutArrayString(orphan[i] - deleted, TempKitNamesMatrix);
-                    TempKitNumbersMatrix = CutArrayString(orphan[i] - deleted, TempKitNumbersMatrix);
-                    TempDistancesMatrix = CutArrayDouble(orphan[i] - deleted, orphan[i] - deleted, TempDistancesMatrix);
-
-                    deleted++;
-                }
-
-                orphan = null;
-
-                KitNames = null;
-                KitNames = TempKitNamesMatrix;
-                TempKitNamesMatrix = null;
-
-                KitNumbers = null;
-                KitNumbers = TempKitNumbersMatrix;
-                TempKitNumbersMatrix = null;
-
-                MatrixOfDistances = null;
-                MatrixOfDistances = TempDistancesMatrix;
-                TempDistancesMatrix = null;
-
-                classificationsOur = null;
-                classificationsOur = new int[KitNumbers.Length];
             }
+
+            //-----------------------------------------------------
+
+            int[] counter = new int[MatrixOfDistances.GetLength(0)];
+            int[] orphan = new int[1];
+            int d = 0;
+
+            for (int i = 0; i < MatrixOfDistances.GetLength(0); i++)
+            {
+                for (int j = 0; j < MatrixOfDistances.GetLength(0); j++)
+                {
+                    if (MatrixOfDistances[i, j] == 99)
+                    {
+                        counter[i]++;
+                    }
+                }
+
+                if (counter[i] == MatrixOfDistances.GetLength(0) - 2)
+                {
+                    orphan[d] = i;
+
+                    d++;
+
+                    Array.Resize(ref orphan, orphan.Length + 1);
+                }
+            }
+
+            counter = null;
+
+            Array.Resize(ref orphan, orphan.Length - 1);
+
+            //-----------------------------------------------------
+
+            int deleted = 0;
+            string[] TempKitNamesMatrix = KitNames;
+            string[] TempKitNumbersMatrix = KitNumbers;
+            double[,] TempDistancesMatrix = MatrixOfDistances;
+
+            for (int i = 0; i < orphan.Length; i++)
+            {
+                TempKitNamesMatrix = CutArrayString(orphan[i] - deleted, TempKitNamesMatrix);
+                TempKitNumbersMatrix = CutArrayString(orphan[i] - deleted, TempKitNumbersMatrix);
+                TempDistancesMatrix = CutArrayDouble(orphan[i] - deleted, orphan[i] - deleted, TempDistancesMatrix);
+
+                deleted++;
+            }
+
+            orphan = null;
+
+            KitNames = null;
+            KitNames = TempKitNamesMatrix;
+            TempKitNamesMatrix = null;
+
+            KitNumbers = null;
+            KitNumbers = TempKitNumbersMatrix;
+            TempKitNumbersMatrix = null;
+
+            MatrixOfDistances = null;
+            MatrixOfDistances = TempDistancesMatrix;
+            TempDistancesMatrix = null;
+
+            classificationsOur = null;
+            classificationsOur = new int[KitNumbers.Length];
+
 
             toolStripStatusLabel1.Text = "Число совпаденцев: " + KitNumbers.Length;
 
@@ -682,39 +687,63 @@ namespace atDNACluster
 
             if (KitNumber != null & PassWord != null)
             {
+                WebClient client = new WebClient();
+                string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(KitNumber + ":" + PassWord));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + credentials;
+
+                Matches = null;
+                CommonMatches = null;
+
+                bool MCReceived = true;
+
                 try
                 {
-                    WebClient client = new WebClient();
-                    string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(KitNumber + ":" + PassWord));
-                    client.Headers[HttpRequestHeader.Authorization] = "Basic " + credentials;
-
-                    Matches = null;
-                    CommonMatches = null;
-
                     string url2 = "https://www.familytreedna.com/api/family-finder/matches-common";
                     var jsonCommonMatchesRaw = client.DownloadString(url2);
                     JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
                     serializerCommonMatches.MaxJsonLength = int.MaxValue;
                     CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
                     jsonCommonMatchesRaw = null;
+                }
+                catch (WebException ex)
+                {
+                    MCReceived = false;
+                }
+                catch (ArgumentException ex)
+                {
+                    ServerOfflineResult = MessageBox.Show(ServerOfflineMessage, ServerOfflineCaption, MessageBoxButtons.OK);
+                }
 
+                bool MReceived = true;
+
+                try
+                {
                     string url = "https://www.familytreedna.com/api/family-finder/matches";
                     var jsonMatchesRaw = client.DownloadString(url);
                     JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
                     serializerMatches.MaxJsonLength = int.MaxValue;
                     Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
                     jsonMatchesRaw = null;
-
-                    FTDNA = true;
                 }
                 catch (WebException ex)
                 {
-                    LoginErrorResult = MessageBox.Show(LoginErrorMessage, LoginErrorCaption, MessageBoxButtons.OK);
+                    MReceived = false;
                 }
                 catch (ArgumentException ex)
                 {
                     ServerOfflineResult = MessageBox.Show(ServerOfflineMessage, ServerOfflineCaption, MessageBoxButtons.OK);
                 }
+
+                if ((MCReceived == false && MReceived == true) || (MCReceived == true && MReceived == false))
+                {
+                    ServerDeadResult = MessageBox.Show(ServerDeadMessage, ServerDeadCaption, MessageBoxButtons.OK);
+                }
+                else if (MCReceived == false && MReceived == false)
+                {
+                    LoginErrorResult = MessageBox.Show(LoginErrorMessage, LoginErrorCaption, MessageBoxButtons.OK);
+                }
+
+                FTDNA = true;
             }
         }
 
