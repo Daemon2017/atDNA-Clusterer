@@ -65,6 +65,8 @@ namespace atDNACluster
         int LastClusteringNumberOfClusters;
         int numberOfClusters = 2;
 
+        bool FTDNA = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -205,109 +207,112 @@ namespace atDNACluster
 
         private void processToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MatrixOfDistances = null;
-            KitNames = null;
-            KitNumbers = null;
-
-            MatrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
-            KitNames = new string[Matches.Length + 1];
-            KitNumbers = new string[Matches.Length + 1];
-
-            replaceZeros();
-            fillDiagonalByZeros();
-
-            //-----------------------------------------------------
-
-            for (int i = 1; i < MatrixOfDistances.GetLength(0); i++)
+            if (FTDNA == true)
             {
-                MatrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                MatrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                KitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
-                KitNumbers[i] = Matches[i - 1].eKitNum;
-            }
+                MatrixOfDistances = null;
+                KitNames = null;
+                KitNumbers = null;
 
-            for (int i = 0; i < Matches.Length; i++)
-            {
-                for (int j = 0; j < CommonMatches.Length; j++)
+                MatrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
+                KitNames = new string[Matches.Length + 1];
+                KitNumbers = new string[Matches.Length + 1];
+
+                replaceZeros();
+                fillDiagonalByZeros();
+
+                //-----------------------------------------------------
+
+                for (int i = 1; i < MatrixOfDistances.GetLength(0); i++)
                 {
-                    if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
+                    MatrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                    MatrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
+                    KitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
+                    KitNumbers[i] = Matches[i - 1].eKitNum;
+                }
+
+                for (int i = 0; i < Matches.Length; i++)
+                {
+                    for (int j = 0; j < CommonMatches.Length; j++)
                     {
-                        for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
+                        if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
                         {
-                            for (int m = 0; m < Matches.Length; m++)
+                            for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
                             {
-                                if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
+                                for (int m = 0; m < Matches.Length; m++)
                                 {
-                                    MatrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
+                                    if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
+                                    {
+                                        MatrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            //-----------------------------------------------------
+                //-----------------------------------------------------
 
-            int[] counter = new int[MatrixOfDistances.GetLength(0)];
-            int[] orphan = new int[1];
-            int d = 0;
+                int[] counter = new int[MatrixOfDistances.GetLength(0)];
+                int[] orphan = new int[1];
+                int d = 0;
 
-            for (int i = 0; i < MatrixOfDistances.GetLength(0); i++)
-            {
-                for (int j = 0; j < MatrixOfDistances.GetLength(0); j++)
+                for (int i = 0; i < MatrixOfDistances.GetLength(0); i++)
                 {
-                    if (MatrixOfDistances[i, j] == 99)
+                    for (int j = 0; j < MatrixOfDistances.GetLength(0); j++)
                     {
-                        counter[i]++;
+                        if (MatrixOfDistances[i, j] == 99)
+                        {
+                            counter[i]++;
+                        }
+                    }
+
+                    if (counter[i] == MatrixOfDistances.GetLength(0) - 2)
+                    {
+                        orphan[d] = i;
+
+                        d++;
+
+                        Array.Resize(ref orphan, orphan.Length + 1);
                     }
                 }
 
-                if (counter[i] == MatrixOfDistances.GetLength(0) - 2)
+                counter = null;
+
+                Array.Resize(ref orphan, orphan.Length - 1);
+
+                //-----------------------------------------------------
+
+                int deleted = 0;
+                string[] TempKitNamesMatrix = KitNames;
+                string[] TempKitNumbersMatrix = KitNumbers;
+                double[,] TempDistancesMatrix = MatrixOfDistances;
+
+                for (int i = 0; i < orphan.Length; i++)
                 {
-                    orphan[d] = i;
+                    TempKitNamesMatrix = CutArrayString(orphan[i] - deleted, TempKitNamesMatrix);
+                    TempKitNumbersMatrix = CutArrayString(orphan[i] - deleted, TempKitNumbersMatrix);
+                    TempDistancesMatrix = CutArrayDouble(orphan[i] - deleted, orphan[i] - deleted, TempDistancesMatrix);
 
-                    d++;
-
-                    Array.Resize(ref orphan, orphan.Length + 1);
+                    deleted++;
                 }
+
+                orphan = null;
+
+                KitNames = null;
+                KitNames = TempKitNamesMatrix;
+                TempKitNamesMatrix = null;
+
+                KitNumbers = null;
+                KitNumbers = TempKitNumbersMatrix;
+                TempKitNumbersMatrix = null;
+
+                MatrixOfDistances = null;
+                MatrixOfDistances = TempDistancesMatrix;
+                TempDistancesMatrix = null;
+
+                classificationsOur = null;
+                classificationsOur = new int[KitNumbers.Length];
             }
-
-            counter = null;
-
-            Array.Resize(ref orphan, orphan.Length - 1);
-
-            //-----------------------------------------------------
-
-            int deleted = 0;
-            string[] TempKitNamesMatrix = KitNames;
-            string[] TempKitNumbersMatrix = KitNumbers;
-            double[,] TempDistancesMatrix = MatrixOfDistances;
-
-            for (int i = 0; i < orphan.Length; i++)
-            {
-                TempKitNamesMatrix = CutArrayString(orphan[i] - deleted, TempKitNamesMatrix);
-                TempKitNumbersMatrix = CutArrayString(orphan[i] - deleted, TempKitNumbersMatrix);
-                TempDistancesMatrix = CutArrayDouble(orphan[i] - deleted, orphan[i] - deleted, TempDistancesMatrix);
-
-                deleted++;
-            }
-
-            orphan = null;
-
-            KitNames = null;
-            KitNames = TempKitNamesMatrix;
-            TempKitNamesMatrix = null;
-
-            KitNumbers = null;
-            KitNumbers = TempKitNumbersMatrix;
-            TempKitNumbersMatrix = null;
-
-            MatrixOfDistances = null;
-            MatrixOfDistances = TempDistancesMatrix;
-            TempDistancesMatrix = null;
-
-            classificationsOur = null;
-            classificationsOur = new int[KitNumbers.Length];
 
             toolStripStatusLabel1.Text = "Число совпаденцев: " + KitNumbers.Length;
 
@@ -660,6 +665,8 @@ namespace atDNACluster
                         KitNames[i - 1] = rowKits[j];
                     }
                 }
+
+                FTDNA = false;
             }
         }
 
@@ -697,6 +704,8 @@ namespace atDNACluster
                     serializerMatches.MaxJsonLength = int.MaxValue;
                     Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
                     jsonMatchesRaw = null;
+
+                    FTDNA = true;
                 }
                 catch (WebException ex)
                 {
