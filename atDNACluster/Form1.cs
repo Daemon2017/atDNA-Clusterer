@@ -27,9 +27,9 @@ namespace atDNACluster
         CommonMatch[] CommonMatches;
         Match[] Matches;
 
-        string DataReceivedMessage = "Данные успешно получены с сервера!";
-        string DataReceivedCaption = "Успех!";
-        DialogResult DataReceivedResult;
+        string NoDataMessage = "Вы не загрузили матрицы с данными!";
+        string NoDataCaption = "Нехватка данных!";
+        DialogResult NoData;
 
         string LoginErrorMessage = "Неправильный логин и/или пароль!";
         string LoginErrorCaption = "Ошибка!";
@@ -45,6 +45,10 @@ namespace atDNACluster
 
         string PCAMmessage = "Сперва Вы должны провести обработку с помощью МГК!";
         string PCACaption = "Нехватка данных!";
+
+        string NumberOfClustersChMessage = "С момента последней обработки с помощью МГК Вы изменили число кластеров - повторите обработку с помощью МГК!";
+        string NumberOfClustersChCaption = "Неправильное количество кластеров!";
+        DialogResult NumberOfClustersCh;
 
         string NumberOfClustersErrorMessage = "Для работы этой функции число кластеров должно быть равным 4!";
         string NumberOfClustersErrorCaption = "Неправильное количество кластеров!";
@@ -67,7 +71,8 @@ namespace atDNACluster
 
         int LastPCANumberOfClusters;
         int LastClusteringNumberOfClusters;
-        int numberOfClusters = 2;
+        int NumberOfClusters = 2;
+        bool NumberOfClustersChanged = false;
 
         bool FTDNA = false;
 
@@ -112,7 +117,7 @@ namespace atDNACluster
             myCurve.Symbol.Border.IsVisible = false;
             myCurve.Symbol.Fill = new Fill(Color.Gray);
 
-            for (int i = 0; i < numberOfClusters; i++)
+            for (int i = 0; i < NumberOfClusters; i++)
             {
                 Color color = colors[i];
                 myCurve = myPane.AddCurve("D" + (i + 1), new PointPairList(), color, SymbolType.Diamond);
@@ -130,7 +135,7 @@ namespace atDNACluster
 
         void updateGraph(int[] classifications)
         {
-            for (int i = 0; i < numberOfClusters + 1; i++)
+            for (int i = 0; i < NumberOfClusters + 1; i++)
             {
                 zedGraph.GraphPane.CurveList[i].Clear();
             }
@@ -345,18 +350,15 @@ namespace atDNACluster
                 pca.Compute();
 
                 matrixOfCoordinates = pca.Transform(MatrixOfDistances, 2);
-                LastPCANumberOfClusters = numberOfClusters;
+                LastPCANumberOfClusters = NumberOfClusters;
 
                 CreateGraph(zedGraph);
+
+                NumberOfClustersChanged = false;
             }
             else
             {
-                string message = "Вы не загрузили матрицы с данными!";
-                string caption = "Нехватка данных!";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                result = MessageBox.Show(message, caption, buttons);
+                NoData = MessageBox.Show(NoDataMessage, NoDataCaption, MessageBoxButtons.OK);
             }
         }
 
@@ -364,15 +366,22 @@ namespace atDNACluster
         {
             if (matrixOfCoordinates != null)
             {
-                transformOfMatrix();
+                if (NumberOfClustersChanged != true)
+                {
+                    transformOfMatrix();
 
-                kmeans = new KMeans(numberOfClusters);
-                kmeans.Compute(mixture);
+                    kmeans = new KMeans(NumberOfClusters);
+                    kmeans.Compute(mixture);
 
-                int[] classifications = kmeans.Clusters.Nearest(mixture);
-                LastClusteringNumberOfClusters = numberOfClusters;
+                    int[] classifications = kmeans.Clusters.Nearest(mixture);
+                    LastClusteringNumberOfClusters = NumberOfClusters;
 
-                updateGraph(classifications);
+                    updateGraph(classifications);
+                }
+                else
+                {
+                    NumberOfClustersCh = MessageBox.Show(NumberOfClustersChMessage, NumberOfClustersChCaption, MessageBoxButtons.OK);
+                }
             }
             else
             {
@@ -385,7 +394,7 @@ namespace atDNACluster
 
         void paintDots(int ColorNumber)
         {
-            if (numberOfClusters != 4)
+            if (NumberOfClusters != 4)
             {
                 NumberOfClustersError = MessageBox.Show(NumberOfClustersErrorMessage, NumberOfClustersErrorCaption, MessageBoxButtons.OK);
             }
@@ -481,42 +490,7 @@ namespace atDNACluster
 
         private void eNGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataReceivedMessage = "The data was successfully received from the server!";
-            DataReceivedCaption = "Success!";
 
-            LoginErrorMessage = "Wrong username and / or password!";
-            LoginErrorCaption = "Error!";
-
-            NumberOfClustersErrorMessage = "To use this feature, number of clusters must be equal to 4!";
-            NumberOfClustersErrorCaption = "Wrong number of clusters!";
-
-            NumberOfPCAClustersErrorMessage = "First, you need to run PCA when the number of clusters is equal to 4!";
-            NumberOfPCAClustersErrorCaption = "Wrong number of clusters!";
-
-            ServerOfflineMessage = "FTDNA's data-server is temporarily unavailable!";
-            ServerOfflineCaption = "Error!";
-
-            NumberOfClusteringClustersErrorMessage = "First, you need to run K-means clustering when the number of clusters is equal to 4!";
-            NumberOfClusteringClustersErrorCaption = "Wrong number of clusters!";
-
-            PCAMmessage = "At first, you must use PCA-processing.";
-            PCACaption = "Not enough data!";
-
-            fileToolStripMenuItem.Text = "File";
-            openToolStripMenuItem1.Text = "Load";
-            numberOfClustersToolStripMenuItem.Text = "Number of clusters";
-            processingToolStripMenuItem.Text = "Processing";
-            outputTypeToolStripMenuItem.Text = "Output type";
-            standartizeToolStripMenuItem.Text = "Standartize";
-            centerToolStripMenuItem.Text = "Center";
-            processToolStripMenuItem.Text = "Process (PCA)";
-            clusterizationToolStripMenuItem.Text = "Clusterization";
-            processToolStripMenuItem1.Text = "Process (K-means)";
-            colorHighlightningToolStripMenuItem.Text = "Color highlighting";
-            redToolStripMenuItem.Text = "1 - Red";
-            greenToolStripMenuItem.Text = "2 - Green";
-            blackToolStripMenuItem.Text = "3 - Black";
-            processToolStripMenuItem2.Text = "Process";
         }
 
         double convertTotalCMToTMRCA(double TotalCM)
@@ -593,9 +567,16 @@ namespace atDNACluster
 
         private void numberOfClustersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(numberOfClusters);
+            int NumberOfClustersOld = NumberOfClusters;
+
+            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(NumberOfClusters);
             ClustersRegulatorWindow.ShowDialog();
-            numberOfClusters = ClustersRegulatorWindow.numberOfClusters;
+            NumberOfClusters = ClustersRegulatorWindow.numberOfClusters;
+
+            if (NumberOfClusters != NumberOfClustersOld)
+            {
+                NumberOfClustersChanged = true;
+            }
         }
 
         private void saveKitsOfMatchesToolStripMenuItem_Click(object sender, EventArgs e)
