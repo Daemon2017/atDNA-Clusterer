@@ -204,7 +204,6 @@ namespace atDNACluster
 
         void transformOfMatrix()
         {
-
             mixture = new double[matrixOfCoordinates.GetLength(0) - 1][];
 
             for (int i = 1; i < matrixOfCoordinates.GetLength(0); i++)
@@ -414,30 +413,32 @@ namespace atDNACluster
                     {
                         string[] kitsForPaint;
 
-                        OpenFileDialog openFileDialog = new OpenFileDialog();
-                        openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        using (OpenFileDialog openFileDialog = new OpenFileDialog())
                         {
-                            kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+                            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
 
-                            for (int i = 0; i < kitsForPaint.Length; i++)
+                            if (openFileDialog.ShowDialog() == DialogResult.OK)
                             {
-                                for (int j = 1; j < KitNumbers.Length; j++)
+                                kitsForPaint = File.ReadAllLines(openFileDialog.FileName);
+
+                                for (int i = 0; i < kitsForPaint.Length; i++)
                                 {
-                                    if (KitNumbers[j] == kitsForPaint[i])
+                                    for (int j = 1; j < KitNumbers.Length; j++)
                                     {
-                                        if (ColorNumber == 1)
+                                        if (KitNumbers[j] == kitsForPaint[i])
                                         {
-                                            classificationsOur[j - 1] = 1;
-                                        }
-                                        else if (ColorNumber == 2)
-                                        {
-                                            classificationsOur[j - 1] = 2;
-                                        }
-                                        else if (ColorNumber == 3)
-                                        {
-                                            classificationsOur[j - 1] = 3;
+                                            if (ColorNumber == 1)
+                                            {
+                                                classificationsOur[j - 1] = 1;
+                                            }
+                                            else if (ColorNumber == 2)
+                                            {
+                                                classificationsOur[j - 1] = 2;
+                                            }
+                                            else if (ColorNumber == 3)
+                                            {
+                                                classificationsOur[j - 1] = 3;
+                                            }
                                         }
                                     }
                                 }
@@ -569,34 +570,39 @@ namespace atDNACluster
         {
             int NumberOfClustersOld = NumberOfClusters;
 
-            ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(NumberOfClusters);
-            ClustersRegulatorWindow.ShowDialog();
-            NumberOfClusters = ClustersRegulatorWindow.numberOfClusters;
-
-            if (NumberOfClusters != NumberOfClustersOld)
+            using (ClustersRegulator ClustersRegulatorWindow = new ClustersRegulator(NumberOfClusters))
             {
-                NumberOfClustersChanged = true;
+                ClustersRegulatorWindow.ShowDialog();
+                NumberOfClusters = ClustersRegulatorWindow.numberOfClusters;
+
+                if (NumberOfClusters != NumberOfClustersOld)
+                {
+                    NumberOfClustersChanged = true;
+                }
             }
         }
 
         private void saveKitsOfMatchesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog SaveKitNumbersDialog = new SaveFileDialog();
-            SaveKitNumbersDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
-            SaveKitNumbersDialog.FilterIndex = 1;
-            SaveKitNumbersDialog.RestoreDirectory = true;
-
-            if (SaveKitNumbersDialog.ShowDialog() == DialogResult.OK)
+            using (SaveFileDialog SaveKitNumbersDialog = new SaveFileDialog())
             {
-                if (SaveKitNumbersDialog.FileName != null)
-                {
-                    StreamWriter str = new StreamWriter(SaveKitNumbersDialog.FileName);
+                SaveKitNumbersDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+                SaveKitNumbersDialog.FilterIndex = 1;
+                SaveKitNumbersDialog.RestoreDirectory = true;
 
-                    for (int i = 0; i < KitNumbers.GetLength(0); i++)
+                if (SaveKitNumbersDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (SaveKitNumbersDialog.FileName != null)
                     {
-                        str.WriteLine(KitNumbers[i]);
+                        using (StreamWriter str = new StreamWriter(SaveKitNumbersDialog.FileName))
+                        {
+                            for (int i = 0; i < KitNumbers.GetLength(0); i++)
+                            {
+                                str.WriteLine(KitNumbers[i]);
+                            }
+                            str.Close();
+                        }
                     }
-                    str.Close();
                 }
             }
         }
@@ -607,52 +613,54 @@ namespace atDNACluster
             KitNumbers = null;
             KitNames = null;
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                string[] allLinesDistances = File.ReadAllLines(openFileDialog.FileName);
+                openFileDialog.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
 
-                MatrixOfDistances = new double[allLinesDistances.Length - 1, allLinesDistances.Length - 1];
-
-                replaceZeros();
-                fillDiagonalByZeros();
-
-                for (int i = 1; i < allLinesDistances.Length; i++)
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string[] rowDistances = allLinesDistances[i].Split(new[] { ';' });
+                    string[] allLinesDistances = File.ReadAllLines(openFileDialog.FileName);
 
-                    for (int j = 2; j < allLinesDistances.Length + 1; j++)
+                    MatrixOfDistances = new double[allLinesDistances.Length - 1, allLinesDistances.Length - 1];
+
+                    replaceZeros();
+                    fillDiagonalByZeros();
+
+                    for (int i = 1; i < allLinesDistances.Length; i++)
                     {
-                        if (double.TryParse(rowDistances[j], out MatrixOfDistances[i - 1, j - 2]))
-                        {
+                        string[] rowDistances = allLinesDistances[i].Split(new[] { ';' });
 
+                        for (int j = 2; j < allLinesDistances.Length + 1; j++)
+                        {
+                            if (double.TryParse(rowDistances[j], out MatrixOfDistances[i - 1, j - 2]))
+                            {
+
+                            }
                         }
                     }
-                }
 
-                string[] allLinesKits = File.ReadAllLines(openFileDialog.FileName);
+                    string[] allLinesKits = File.ReadAllLines(openFileDialog.FileName);
 
-                KitNumbers = new string[allLinesKits.Length - 1];
-                KitNames = new string[allLinesKits.Length - 1];
+                    KitNumbers = new string[allLinesKits.Length - 1];
+                    KitNames = new string[allLinesKits.Length - 1];
 
-                for (int i = 1; i < allLinesKits.Length; i++)
-                {
-                    string[] rowKits = allLinesKits[i].Split(new[] { ';' });
-
-                    for (int j = 0; j < 0 + 1; j++)
+                    for (int i = 1; i < allLinesKits.Length; i++)
                     {
-                        KitNumbers[i - 1] = rowKits[j];
+                        string[] rowKits = allLinesKits[i].Split(new[] { ';' });
+
+                        for (int j = 0; j < 0 + 1; j++)
+                        {
+                            KitNumbers[i - 1] = rowKits[j];
+                        }
+
+                        for (int j = 1; j < 1 + 1; j++)
+                        {
+                            KitNames[i - 1] = rowKits[j];
+                        }
                     }
 
-                    for (int j = 1; j < 1 + 1; j++)
-                    {
-                        KitNames[i - 1] = rowKits[j];
-                    }
+                    FTDNA = false;
                 }
-
-                FTDNA = false;
             }
         }
 
@@ -661,10 +669,12 @@ namespace atDNACluster
             string KitNumber;
             string PassWord;
 
-            Authorization AuthorizationWindow = new Authorization();
-            AuthorizationWindow.ShowDialog();
-            KitNumber = AuthorizationWindow.KitNumber;
-            PassWord = AuthorizationWindow.PassWord;
+            using (Authorization AuthorizationWindow = new Authorization())
+            {
+                AuthorizationWindow.ShowDialog();
+                KitNumber = AuthorizationWindow.KitNumber;
+                PassWord = AuthorizationWindow.PassWord;
+            }
 
             if (KitNumber != null & PassWord != null)
             {
@@ -746,6 +756,34 @@ namespace atDNACluster
             }
 
             LongestSegmentToolStripMenuItem.CheckState = CheckState.Checked;
+        }
+
+        private void fTDNAmcmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FTDNA = true;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var jsonMatchesRaw = File.ReadAllText(openFileDialog.FileName);
+
+                    JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
+                    serializerMatches.MaxJsonLength = int.MaxValue;
+                    Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
+                }
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var jsonCommonMatchesRaw = File.ReadAllText(openFileDialog.FileName);
+
+                    JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
+                    serializerCommonMatches.MaxJsonLength = int.MaxValue;
+                    CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
+                }
+            }
         }
     }
 }
