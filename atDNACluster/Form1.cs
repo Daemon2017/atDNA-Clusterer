@@ -24,8 +24,8 @@ namespace atDNACluster
         PrincipalComponentAnalysis pca;
         DescriptiveAnalysis sda;
         AnalysisMethod AnalysisPCA;
-        CommonMatch[] CommonMatches;
-        Match[] Matches;
+        CommonMatchClass[] MyCommonMatches;
+        MatchClass[] MyMatches;
 
         string NoDataMessage = "Вы не загрузили матрицы с данными!";
         string NoDataCaption = "Нехватка данных!";
@@ -221,9 +221,9 @@ namespace atDNACluster
                 KitNames = null;
                 KitNumbers = null;
 
-                MatrixOfDistances = new double[Matches.Length + 1, Matches.Length + 1];
-                KitNames = new string[Matches.Length + 1];
-                KitNumbers = new string[Matches.Length + 1];
+                MatrixOfDistances = new double[MyMatches.Length + 1, MyMatches.Length + 1];
+                KitNames = new string[MyMatches.Length + 1];
+                KitNumbers = new string[MyMatches.Length + 1];
 
                 replaceZeros();
                 fillDiagonalByZeros();
@@ -232,25 +232,25 @@ namespace atDNACluster
 
                 for (int i = 1; i < MatrixOfDistances.GetLength(0); i++)
                 {
-                    MatrixOfDistances[0, i] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                    MatrixOfDistances[i, 0] = convertTotalCMToTMRCA(Matches[i - 1].totalCM);
-                    KitNames[i] = Matches[i - 1].firstName + " " + Matches[i - 1].middleName + " " + Matches[i - 1].lastName;
-                    KitNumbers[i] = Matches[i - 1].eKitNum;
+                    MatrixOfDistances[0, i] = convertTotalCMToTMRCA(MyMatches[i - 1].totalCM);
+                    MatrixOfDistances[i, 0] = convertTotalCMToTMRCA(MyMatches[i - 1].totalCM);
+                    KitNames[i] = MyMatches[i - 1].firstName + " " + MyMatches[i - 1].middleName + " " + MyMatches[i - 1].lastName;
+                    KitNumbers[i] = MyMatches[i - 1].eKitNum;
                 }
 
-                for (int i = 0; i < Matches.Length; i++)
+                for (int i = 0; i < MyMatches.Length; i++)
                 {
-                    for (int j = 0; j < CommonMatches.Length; j++)
+                    for (int j = 0; j < MyCommonMatches.Length; j++)
                     {
-                        if (Matches[i].matchResultId == CommonMatches[j].matchResultId)
+                        if (MyMatches[i].matchResultId == MyCommonMatches[j].matchResultId)
                         {
-                            for (int n = 0; n < CommonMatches[j].commonMatches.Count; n++)
+                            for (int n = 0; n < MyCommonMatches[j].commonMatches.Count; n++)
                             {
-                                for (int m = 0; m < Matches.Length; m++)
+                                for (int m = 0; m < MyMatches.Length; m++)
                                 {
-                                    if (Matches[m].matchResultId == CommonMatches[j].commonMatches[n].resultId2)
+                                    if (MyMatches[m].matchResultId == MyCommonMatches[j].commonMatches[n].resultId2)
                                     {
-                                        MatrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(CommonMatches[j].commonMatches[n].totalCM);
+                                        MatrixOfDistances[i + 1, m + 1] = convertTotalCMToTMRCA(MyCommonMatches[j].commonMatches[n].totalCM);
                                     }
                                 }
                             }
@@ -501,7 +501,7 @@ namespace atDNACluster
             return TMRCA;
         }
 
-        public class Match
+        public class MatchClass
         {
             public int matchResultId { get; set; }
             public string eKitNum { get; set; }
@@ -510,6 +510,16 @@ namespace atDNACluster
             public string lastName { get; set; }
             public double totalCM { get; set; }
             public double longestCM { get; set; }
+            public List<Segment> segments { get; set; }
+        }
+
+        public class Segment
+        {
+            public double centimorgans { get; set; }
+            public int numberOfSNPs { get; set; }
+            public int startPosition { get; set; }
+            public int endPosition { get; set; }
+            public int chromosome { get; set; }
         }
 
         public class Common
@@ -518,7 +528,7 @@ namespace atDNACluster
             public double totalCM { get; set; }
         }
 
-        public class CommonMatch
+        public class CommonMatchClass
         {
             public int matchResultId { get; set; }
             public List<Common> commonMatches { get; set; }
@@ -682,8 +692,8 @@ namespace atDNACluster
                 string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(KitNumber + ":" + PassWord));
                 client.Headers[HttpRequestHeader.Authorization] = "Basic " + credentials;
 
-                Matches = null;
-                CommonMatches = null;
+                MyMatches = null;
+                MyCommonMatches = null;
 
                 bool MCReceived = true;
 
@@ -693,7 +703,7 @@ namespace atDNACluster
                     var jsonCommonMatchesRaw = client.DownloadString(url2);
                     JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
                     serializerCommonMatches.MaxJsonLength = int.MaxValue;
-                    CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
+                    MyCommonMatches = serializerCommonMatches.Deserialize<CommonMatchClass[]>(jsonCommonMatchesRaw);
                     jsonCommonMatchesRaw = null;
                 }
                 catch (WebException ex)
@@ -713,7 +723,7 @@ namespace atDNACluster
                     var jsonMatchesRaw = client.DownloadString(url);
                     JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
                     serializerMatches.MaxJsonLength = int.MaxValue;
-                    Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
+                    MyMatches = serializerMatches.Deserialize<MatchClass[]>(jsonMatchesRaw);
                     jsonMatchesRaw = null;
                 }
                 catch (WebException ex)
@@ -760,6 +770,9 @@ namespace atDNACluster
 
         private void fTDNAmcmToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MyMatches = null;
+            MyCommonMatches = null;
+
             FTDNA = true;
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -772,7 +785,7 @@ namespace atDNACluster
 
                     JavaScriptSerializer serializerMatches = new JavaScriptSerializer();
                     serializerMatches.MaxJsonLength = int.MaxValue;
-                    Matches = serializerMatches.Deserialize<Match[]>(jsonMatchesRaw);
+                    MyMatches = serializerMatches.Deserialize<MatchClass[]>(jsonMatchesRaw);
                 }
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -781,7 +794,53 @@ namespace atDNACluster
 
                     JavaScriptSerializer serializerCommonMatches = new JavaScriptSerializer();
                     serializerCommonMatches.MaxJsonLength = int.MaxValue;
-                    CommonMatches = serializerCommonMatches.Deserialize<CommonMatch[]>(jsonCommonMatchesRaw);
+                    MyCommonMatches = serializerCommonMatches.Deserialize<CommonMatchClass[]>(jsonCommonMatchesRaw);
+                }
+            }
+        }
+
+        private void saveKitsOfXMatchesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string[] xKitNumbers = new string[0];
+
+            foreach (MatchClass match in MyMatches)
+            {
+                int numberOfXSegments = 0;
+
+                foreach (Segment segment in match.segments)
+                {
+                    if(segment.chromosome==98)
+                    {
+                        numberOfXSegments++;
+                    }
+                }
+
+                if(numberOfXSegments>0)
+                {
+                    Array.Resize(ref xKitNumbers, xKitNumbers.Length + 1);
+                    xKitNumbers[xKitNumbers.Length - 1] = match.eKitNum;
+                }
+            }
+
+            using (SaveFileDialog SaveKitNumbersDialog = new SaveFileDialog())
+            {
+                SaveKitNumbersDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+                SaveKitNumbersDialog.FilterIndex = 1;
+                SaveKitNumbersDialog.RestoreDirectory = true;
+
+                if (SaveKitNumbersDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (SaveKitNumbersDialog.FileName != null)
+                    {
+                        using (StreamWriter str = new StreamWriter(SaveKitNumbersDialog.FileName))
+                        {
+                            for (int i = 0; i < xKitNumbers.GetLength(0); i++)
+                            {
+                                str.WriteLine(xKitNumbers[i]);
+                            }
+                            str.Close();
+                        }
+                    }
                 }
             }
         }

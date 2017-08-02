@@ -33,6 +33,7 @@
             this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openGedmatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFTDNAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fTDNAmcmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveKitsOfMatchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.fTDNAmcmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveKitsOfXMatchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -107,10 +108,18 @@
             this.openFTDNAToolStripMenuItem.Text = "FTDNA (с сайта)";
             this.openFTDNAToolStripMenuItem.Click += new System.EventHandler(this.openFTDNAToolStripMenuItem_Click_1);
             // 
+            // fTDNAmcmToolStripMenuItem
+            // 
+            this.fTDNAmcmToolStripMenuItem.Name = "fTDNAmcmToolStripMenuItem";
+            this.fTDNAmcmToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.fTDNAmcmToolStripMenuItem.Text = "FTDNA (из 2-х файлов)";
+            this.fTDNAmcmToolStripMenuItem.Click += new System.EventHandler(this.fTDNAmcmToolStripMenuItem_Click);
+            // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveKitsOfMatchesToolStripMenuItem});
+            this.saveKitsOfMatchesToolStripMenuItem,
+            this.saveKitsOfXMatchesToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "Сохранить";
@@ -284,12 +293,12 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(127, 17);
             this.toolStripStatusLabel1.Text = "Число совпаденцев: 0";
             // 
-            // fTDNAmcmToolStripMenuItem
+            // saveKitsOfXMatchesToolStripMenuItem
             // 
-            this.fTDNAmcmToolStripMenuItem.Name = "fTDNAmcmToolStripMenuItem";
-            this.fTDNAmcmToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.fTDNAmcmToolStripMenuItem.Text = "FTDNA (из 2-х файлов)";
-            this.fTDNAmcmToolStripMenuItem.Click += new System.EventHandler(this.fTDNAmcmToolStripMenuItem_Click);
+            this.saveKitsOfXMatchesToolStripMenuItem.Name = "saveKitsOfXMatchesToolStripMenuItem";
+            this.saveKitsOfXMatchesToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.saveKitsOfXMatchesToolStripMenuItem.Text = "Номера X-совпаденцев";
+            this.saveKitsOfXMatchesToolStripMenuItem.Click += new System.EventHandler(this.saveKitsOfXMatchesToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -340,6 +349,7 @@
         private System.Windows.Forms.ToolStripMenuItem LongestSegmentToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem fTDNAmcmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveKitsOfXMatchesToolStripMenuItem;
     }
 }
 
